@@ -12,27 +12,51 @@ npm install -g dse-ai
 
 ## Usage
 
+### Commands
+
 ```bash
-# Get latest stock data
+# Get latest stock data for all instruments
 dse-ai latest
 
-# Get DSEX data (with optional symbol filter)
-dse-ai dsex [symbol]
+# Get DSEX market data (with optional symbol filter)
+dse-ai dsex
+dse-ai dsex GRAMEEN
 
-# Get top 30 stocks
+# Get top 30 performing stocks
 dse-ai top30
 
-# Get historical data
-dse-ai historical --start 2024-01-01 --end 2024-01-31 [--inst SYMBOL]
+# Get historical data for a date range
+dse-ai historical --start 2024-01-01 --end 2024-01-31
+dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN
+
+# Configure API settings
+dse-ai config --show
+dse-ai config --url http://localhost:8991
+dse-ai config  # Interactive mode
+```
+
+### Output Formats
+
+All data commands support multiple output formats:
+
+```bash
+# Default: Formatted table (colored)
+dse-ai latest
+
+# JSON format
+dse-ai latest --json
+
+# Markdown format
+dse-ai latest --markdown
 ```
 
 ## Configuration
 
-Set the API base URL (default: http://localhost:8991):
+Set the API base URL in three ways (priority order):
 
-```bash
-export DSE_API_URL=http://your-api-server:port
-```
+1. **Command:** `dse-ai config --url http://your-api:port`
+2. **Environment:** `export DSE_API_URL=http://your-api:port`
+3. **Default:** `http://localhost:8991`
 
 ## Development
 
@@ -52,6 +76,17 @@ npm run link
 # Run tests
 npm test
 ```
+
+## API Requirements
+
+This CLI requires a running DSentiment API server. Start it with:
+
+```bash
+cd /path/to/dsentiment
+python main.py
+```
+
+The API will be available at `http://localhost:8991`
 
 ## License
 

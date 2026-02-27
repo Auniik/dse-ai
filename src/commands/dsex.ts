@@ -1,0 +1,46 @@
+import type { Command } from 'commander';
+import chalk from 'chalk';
+import ora from 'ora';
+import { DseApiClient } from '../lib/api-client.js';
+import { formatStockTable } from '../lib/formatter.js';
+
+export function dsexCommand(program: Command): void {
+  program
+    .command('dsex [symbol]')
+    .description('Get DSEX market data with optional symbol filter')
+    .option('-j, --json', 'Output as JSON')
+    .option('-m, --markdown', 'Output as Markdown')
+    .action(async (symbol, options) => {
+      const spinner = ora(
+        symbol 
+          ? `Fetching DSEX data for ${symbol}...`
+          : 'Fetching DSEX market data...'
+      ).start();
+
+      try {
+        const client = new DseApiClient();
+        const data = await client.getDsex(symbol);
+
+        if (data.length === 0) {
+          spinner.warn(chalk.yellow(`No data found${symbol ? ` for symbol: ${symbol}` : ''}`));
+          return;
+        }
+
+        spinner.succeed(chalk.green('Data fetched successfully!'));
+
+        if (options.json) {
+          console.log(JSON.stringify(data, null, 2));
+        } else if (options.markdown) {
+          const { formatMarkdown } = await import('../lib/formatter.js');
+          console.log(formatMarkdown(data));
+        } else {
+          const title = symbol ? `📈 DSEX Data - ${symbol}` : '📈 DSEX Market Data';
+          console.log(formatStockTable(data, title));
+        }
+      } catch (error) {
+        spinner.fail(chalk.red('Failed to fetch data'));
+        console.error(chalk.red(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`));
+        process.exit(1);
+      }
+    });
+}
