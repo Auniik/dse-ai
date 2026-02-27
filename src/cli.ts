@@ -7,20 +7,18 @@ import { latestCommand } from './commands/latest.js';
 import { dsexCommand } from './commands/dsex.js';
 import { top30Command } from './commands/top30.js';
 import { historicalCommand } from './commands/historical.js';
-import { configCommand } from './commands/config.js';
 
 const program = new Command();
 
 program
   .name('dse-ai')
-  .description('AI-friendly CLI for DSentiment APIs - Dhaka Stock Exchange data')
+  .description('AI-friendly CLI for Dhaka Stock Exchange data - Scrapes from dsebd.org')
   .version(getVersion());
 
 latestCommand(program);
 dsexCommand(program);
 top30Command(program);
 historicalCommand(program);
-configCommand(program);
 
 program.parse(process.argv);
 

@@ -2,30 +2,38 @@
 
 This skill provides AI-friendly access to Dhaka Stock Exchange (DSE) data through a command-line interface.
 
+## Data Source
+
+**Direct web scraping** from dsebd.org - No API server or authentication required!
+
+The CLI scrapes data directly from:
+- Latest: https://dsebd.org/latest_share_price_scroll_l.php
+- DSEX: https://dsebd.org/dseX_share.php
+- Top 30: https://dsebd.org/dse30_share.php
+- Historical: https://dsebd.org/day_end_archive.php
+
 ## Available Commands
 
-### Stock Data Commands (To be implemented)
+### Stock Data Commands
 - `dse-ai latest` - Get latest stock data for all instruments
 - `dse-ai dsex [symbol]` - Get DSEX market data with optional symbol filter
 - `dse-ai top30` - Get top 30 performing stocks
 - `dse-ai historical --start DATE --end DATE [--inst SYMBOL]` - Get historical stock data
 
-## Configuration
+### Output Options
 
-The CLI reads API base URL from:
-1. Environment variable: `DSE_API_URL`
-2. Config file: `~/.dse-ai/config.json`
-3. Default: `http://localhost:8991`
+All commands support:
+- **Default**: Formatted table with colored output
+- **JSON**: `--json` flag for programmatic processing
+- **Markdown**: `--markdown` flag for documentation
 
-Settings can be customized in `settings.yaml`:
-- API base URL
-- Timeout settings
-- Output format preferences
-- Cache configuration
+## Features
 
-## No Authentication Required
-
-All DSE APIs are public and don't require authentication. The CLI can be used immediately without setup.
+- ✅ No authentication or setup required
+- ✅ Direct scraping from official DSE website
+- ✅ Automatic retry with exponential backoff
+- ✅ Beautiful table formatting with color coding
+- ✅ Multiple output formats (Table, JSON, Markdown)
 
 ## Development
 
@@ -57,8 +65,10 @@ dse-ai top30
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 ```
 
-## API Source
+## Implementation Details
 
-Data is fetched from DSentiment API (`/Users/anik/dev/auniik/dsentiment`) which scrapes:
-- Dhaka Stock Exchange (dsebd.org)
-- Real-time and historical stock market data
+Based on the Python implementation in `/Users/anik/dev/auniik/dsentiment/services/stock_service.py`:
+- Uses cheerio for HTML parsing (like BeautifulSoup in Python)
+- Implements retry logic with exponential backoff
+- Parses table data from HTML responses
+- No external API dependencies

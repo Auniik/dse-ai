@@ -1,8 +1,8 @@
 # dse-ai
 
-AI-friendly CLI for Dhaka Stock Exchange (DSE) APIs
+AI-friendly CLI for Dhaka Stock Exchange (DSE) data
 
-Access real-time and historical stock data from the Dhaka Stock Exchange through a simple command-line interface.
+Scrapes real-time and historical stock data directly from the Dhaka Stock Exchange website (dsebd.org).
 
 ## Installation
 
@@ -28,11 +28,6 @@ dse-ai top30
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN
-
-# Configure API settings
-dse-ai config --show
-dse-ai config --url http://localhost:8991
-dse-ai config  # Interactive mode
 ```
 
 ### Output Formats
@@ -50,13 +45,13 @@ dse-ai latest --json
 dse-ai latest --markdown
 ```
 
-## Configuration
+## Features
 
-Set the API base URL in three ways (priority order):
-
-1. **Command:** `dse-ai config --url http://your-api:port`
-2. **Environment:** `export DSE_API_URL=http://your-api:port`
-3. **Default:** `http://localhost:8991`
+- 🌐 **Direct scraping** from dsebd.org - No API server required
+- 📊 **Beautiful tables** with colored output
+- 🔄 **Automatic retry** with exponential backoff
+- 📄 **Multiple formats** - Table, JSON, Markdown
+- 🎨 **Color coding** - Green for positive, red for negative changes
 
 ## Development
 
@@ -77,16 +72,13 @@ npm run link
 npm test
 ```
 
-## API Requirements
+## Data Source
 
-This CLI requires a running DSentiment API server. Start it with:
-
-```bash
-cd /path/to/dsentiment
-python main.py
-```
-
-The API will be available at `http://localhost:8991`
+All data is scraped directly from:
+- Latest: https://dsebd.org/latest_share_price_scroll_l.php
+- DSEX: https://dsebd.org/dseX_share.php
+- Top 30: https://dsebd.org/dse30_share.php
+- Historical: https://dsebd.org/day_end_archive.php
 
 ## License
 
