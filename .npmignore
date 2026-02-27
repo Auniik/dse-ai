@@ -1,0 +1,10 @@
+src
+tests
+coverage
+*.test.ts
+*.spec.ts
+tsconfig.json
+vitest.config.ts
+.env
+.env.example
+.github

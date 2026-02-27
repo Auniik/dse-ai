@@ -1,0 +1,19 @@
+# DSE API Settings
+# Configuration file for dse-ai CLI
+
+# API Configuration
+api:
+  baseUrl: https://api.dsentiment.com
+  timeout: 30000
+  retries: 3
+
+# Output Configuration
+output:
+  format: markdown
+  verbose: false
+  colorize: true
+
+# Cache Configuration
+cache:
+  enabled: true
+  ttl: 3600
