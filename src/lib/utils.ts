@@ -37,9 +37,7 @@ export function loadConfig(key: string): any {
   return null;
 }
 
-export function deleteConfig(key: string): void {
-  const configFile = path.join(getConfigPath(), `${key}.json`);
-  if (fs.existsSync(configFile)) {
-    fs.unlinkSync(configFile);
-  }
+export function getApiBaseUrl(): string {
+  const config = loadConfig('config');
+  return config?.baseUrl || process.env.DSE_API_URL || 'http://localhost:8991';
 }

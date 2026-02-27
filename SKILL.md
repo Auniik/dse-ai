@@ -1,23 +1,31 @@
 # DSE-AI CLI Skill
 
-This skill provides AI-friendly access to DSentiment APIs through a command-line interface.
+This skill provides AI-friendly access to Dhaka Stock Exchange (DSE) data through a command-line interface.
 
 ## Available Commands
 
-### Authentication
-- `dse-ai auth` - Authenticate with DSentiment API
-- `dse-ai whoami` - Display current authentication information
-- `dse-ai logout` - Remove stored credentials
+### Stock Data Commands (To be implemented)
+- `dse-ai latest` - Get latest stock data for all instruments
+- `dse-ai dsex [symbol]` - Get DSEX market data with optional symbol filter
+- `dse-ai top30` - Get top 30 performing stocks
+- `dse-ai historical --start DATE --end DATE [--inst SYMBOL]` - Get historical stock data
 
 ## Configuration
 
-The CLI stores authentication credentials in `~/.dse-ai/auth.json`.
+The CLI reads API base URL from:
+1. Environment variable: `DSE_API_URL`
+2. Config file: `~/.dse-ai/config.json`
+3. Default: `http://localhost:8991`
 
 Settings can be customized in `settings.yaml`:
 - API base URL
 - Timeout settings
 - Output format preferences
 - Cache configuration
+
+## No Authentication Required
+
+All DSE APIs are public and don't require authentication. The CLI can be used immediately without setup.
 
 ## Development
 
@@ -43,10 +51,14 @@ npm run link
 After linking globally:
 ```bash
 dse-ai --help
-dse-ai auth
-dse-ai whoami
+dse-ai latest
+dse-ai dsex GRAMEEN
+dse-ai top30
+dse-ai historical --start 2024-01-01 --end 2024-01-31
 ```
 
-## Next Steps
+## API Source
 
-Add commands for DSentiment API endpoints based on the functionality in `/Users/anik/dev/auniik/dsentiment`.
+Data is fetched from DSentiment API (`/Users/anik/dev/auniik/dsentiment`) which scrapes:
+- Dhaka Stock Exchange (dsebd.org)
+- Real-time and historical stock market data
