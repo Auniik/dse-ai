@@ -2,7 +2,7 @@ import type { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
-import { formatStockTable } from '../lib/formatter.js';
+import { formatStockTable, formatToon } from '../lib/formatter.js';
 
 export function historicalCommand(program: Command): void {
   program
@@ -13,6 +13,7 @@ export function historicalCommand(program: Command): void {
     .option('-i, --inst <symbol>', 'Trading code/symbol (default: All Instrument)')
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
+    .option('-t, --toon', 'Output as TOON (compact for LLMs)')
     .action(async (options) => {
       const spinner = ora(
         `Fetching historical data from ${options.start} to ${options.end}...`
@@ -38,6 +39,8 @@ export function historicalCommand(program: Command): void {
         } else if (options.markdown) {
           const { formatMarkdown } = await import('../lib/formatter.js');
           console.log(formatMarkdown(data));
+        } else if (options.toon) {
+          console.log(formatToon(data));
         } else {
           const title = options.inst
             ? `📅 Historical Data - ${options.inst} (${options.start} to ${options.end})`

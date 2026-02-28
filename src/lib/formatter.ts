@@ -1,5 +1,6 @@
 import Table from 'cli-table3';
 import chalk from 'chalk';
+import { encode as toonEncode } from '@toon-format/toon';
 import type { StockData } from '../types/index.js';
 
 export function formatStockTable(data: StockData[], title?: string): string {
@@ -66,4 +67,8 @@ export function formatMarkdown(data: StockData[]): string {
   });
 
   return md;
+}
+
+export function formatToon(data: any): string {
+  return toonEncode(data);
 }

@@ -2,7 +2,7 @@ import type { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
-import { formatStockTable } from '../lib/formatter.js';
+import { formatStockTable, formatToon } from '../lib/formatter.js';
 
 export function dsexCommand(program: Command): void {
   program
@@ -10,6 +10,7 @@ export function dsexCommand(program: Command): void {
     .description('Get DSEX market data with optional symbol filter')
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
+    .option('-t, --toon', 'Output as TOON (compact for LLMs)')
     .action(async (symbol, options) => {
       const spinner = ora(
         symbol 
@@ -33,6 +34,8 @@ export function dsexCommand(program: Command): void {
         } else if (options.markdown) {
           const { formatMarkdown } = await import('../lib/formatter.js');
           console.log(formatMarkdown(data));
+        } else if (options.toon) {
+          console.log(formatToon(data));
         } else {
           const title = symbol ? `📈 DSEX Data - ${symbol}` : '📈 DSEX Market Data';
           console.log(formatStockTable(data, title));

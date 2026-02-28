@@ -26,6 +26,7 @@ All commands support:
 - **Default**: Formatted table with colored output
 - **JSON**: `--json` flag for programmatic processing
 - **Markdown**: `--markdown` flag for documentation
+- **TOON**: `--toon` flag for LLM-optimized compact format
 
 ## Features
 

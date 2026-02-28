@@ -43,6 +43,9 @@ dse-ai latest --json
 
 # Markdown format
 dse-ai latest --markdown
+
+# TOON format (compact for LLMs)
+dse-ai latest --toon
 ```
 
 ## Features
@@ -50,8 +53,9 @@ dse-ai latest --markdown
 - 🌐 **Direct scraping** from dsebd.org - No API server required
 - 📊 **Beautiful tables** with colored output
 - 🔄 **Automatic retry** with exponential backoff
-- 📄 **Multiple formats** - Table, JSON, Markdown
+- 📄 **Multiple formats** - Table, JSON, Markdown, TOON
 - 🎨 **Color coding** - Green for positive, red for negative changes
+- 🤖 **LLM-optimized** - TOON format reduces token usage for AI tools
 
 ## Development
 
