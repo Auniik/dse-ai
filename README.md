@@ -56,6 +56,11 @@ dse-ai circuit --upper        # Show only upper circuit hits
 dse-ai circuit --lower        # Show only lower circuit hits
 dse-ai circuit --all          # Show all circuit breaker limits
 
+# Get sector-wise data
+dse-ai sectors                # Show all sectors with median P/E ratios
+dse-ai sectors --sector Bank  # Show all Bank sector stocks
+dse-ai sectors --area 11      # Show stocks by area ID
+
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN

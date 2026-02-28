@@ -13,6 +13,7 @@ import { losersCommand } from './commands/losers.js';
 import { companyCommand } from './commands/company.js';
 import { marketStatsCommand } from './commands/market-stats.js';
 import { circuitCommand } from './commands/circuit.js';
+import { sectorsCommand } from './commands/sectors.js';
 
 const program = new Command();
 
@@ -31,6 +32,7 @@ losersCommand(program);
 program.addCommand(companyCommand);
 marketStatsCommand(program);
 circuitCommand(program);
+program.addCommand(sectorsCommand);
 
 program.parse(process.argv);
 

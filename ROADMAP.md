@@ -2,7 +2,7 @@
 
 **Project**: dse-ai - AI-friendly CLI for Dhaka Stock Exchange data analysis  
 **Goal**: Provide comprehensive market data for AI-powered investment recommendations  
-**Current Status**: Phase 1 COMPLETE! 🎉 (10 commands total)
+**Current Status**: Phase 2 underway! (11 commands total) 🚀
 
 ---
 
@@ -10,11 +10,11 @@
 
 - **Phase 0 (Foundation)**: ✅ 100% Complete (5/5)
 - **Phase 1 (Quick Wins)**: ✅ 100% Complete (4/4)
-- **Phase 2 (Fundamental Analysis)**: ⬜ 0% Complete (0/4)
+- **Phase 2 (Fundamental Analysis)**: 🟡 25% Complete (1/4)
 - **Phase 3 (Advanced Analysis)**: ⬜ 0% Complete (0/4)
 - **Phase 4 (Specialized)**: ⬜ 0% Complete (0/4)
 
-**Overall Progress**: 48% (10/21 total features)
+**Overall Progress**: 52% (11/21 total features)
 
 ---
 
@@ -40,6 +40,7 @@ Core market data commands - **Status: 5/5 Complete**
 - [x] `dse-ai company <SYMBOL>` - Company financials & fundamentals (Phase 1.2)
 - [x] `dse-ai market-stats` (alias: `stats`) - Market statistics & overview (Phase 1.3)
 - [x] `dse-ai circuit` - Circuit breaker status and limits (Phase 1.4)
+- [x] `dse-ai sectors` - Sectoral P/E ratios and performance (Phase 2.3)
 
 ### Features:
 - [x] Full date/time headers from DSE website
@@ -140,7 +141,7 @@ Core market data commands - **Status: 5/5 Complete**
 
 **Priority**: HIGH  
 **Target**: 4 new commands  
-**Status**: 0/4 Complete  
+**Status**: 1/4 Complete  
 **Estimated Effort**: 3-4 days
 
 ### 2.1 AGM/EGM and Record Dates [ ]
@@ -171,13 +172,21 @@ Core market data commands - **Status: 5/5 Complete**
 - [ ] Update README
 - [ ] **AI Value**: Risk assessment, regulatory compliance screening
 
-### 2.3 Company by Category/Sector [ ]
-- [ ] Command: `dse-ai sector [NAME]`
-  - [ ] Scrape `by_industrylisting.php`
-  - [ ] Parse all sectors/categories
-  - [ ] Extract companies per sector
-  - [ ] Show sector-wise performance
-  - [ ] If NAME provided, show companies in that sector
+### 2.3 Company by Category/Sector ✅ 
+- [x] Command: `dse-ai sectors`
+  - [x] Scrape `sectoral_PE.php` for P/E ratios
+  - [x] Scrape `ltp_industry.php?area={id}` for sector stocks
+  - [x] Parse all 19 sectors with median P/E
+  - [x] Extract companies per sector with performance
+  - [x] Show sector-wise stock lists
+  - [x] Add flag: `--sector <NAME>` for specific sector
+  - [x] Add flag: `--area <ID>` for sector by area ID
+  - [x] Support all output formats
+- [x] Create `src/lib/scrapers/sector-scraper.ts`
+- [x] Create `src/commands/sectors.ts`
+- [x] Update `src/lib/api-client.ts`
+- [x] Update README
+- [x] **AI Value**: Sector rotation strategies, comparative sector analysis, identify sector leaders
   - [ ] Support all output formats
   - [ ] Add tests
 - [ ] Create `src/lib/scrapers/sector-scraper.ts`
