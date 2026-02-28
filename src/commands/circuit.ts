@@ -1,12 +1,13 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon, formatMarkdown } from '../lib/formatter.js';
 
-export function circuitCommand(program: Command): void {
-  program
-    .command('circuit')
+export function createCircuitCommand() {
+  const command = new Command('circuit');
+
+  command
     .description('Get circuit breaker status and limits')
     .option('--upper', 'Show only upper circuit breaker hits')
     .option('--lower', 'Show only lower circuit breaker hits')
@@ -79,4 +80,6 @@ export function circuitCommand(program: Command): void {
         process.exit(1);
       }
     });
+
+  return command;
 }

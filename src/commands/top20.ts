@@ -1,12 +1,13 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
 
-export function top20Command(program: Command): void {
-  program
-    .command('top20')
+export function createTop20Command() {
+  const command = new Command('top20');
+
+  command
     .description('Get top 20 shares by value, volume, or trade')
     .option('-v, --value', 'Show top 20 by value (default: show all)')
     .option('-o, --volume', 'Show top 20 by volume')
@@ -75,4 +76,6 @@ export function top20Command(program: Command): void {
         process.exit(1);
       }
     });
+
+  return command;
 }

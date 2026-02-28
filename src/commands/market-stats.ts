@@ -1,13 +1,14 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import Table from 'cli-table3';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { encode as toonEncode } from '@toon-format/toon';
 
-export function marketStatsCommand(program: Command): void {
-  program
-    .command('market-stats')
+export function createMarketStatsCommand() {
+  const command = new Command('market-stats');
+
+  command
     .alias('stats')
     .description('Get market statistics and overview')
     .option('-j, --json', 'Output as JSON')
@@ -148,6 +149,8 @@ export function marketStatsCommand(program: Command): void {
         process.exit(1);
       }
     });
+
+  return command;
 }
 
 function formatMarkdown(data: any, header: string, includeBlock: boolean): string {

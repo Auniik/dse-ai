@@ -1,12 +1,13 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
 
-export function gainersCommand(program: Command): void {
-  program
-    .command('gainers')
+export function createGainersCommand() {
+  const command = new Command('gainers');
+
+  command
     .description('Get top 10 gainers of the day')
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
@@ -42,4 +43,6 @@ export function gainersCommand(program: Command): void {
         process.exit(1);
       }
     });
+
+  return command;
 }

@@ -1,10 +1,13 @@
 import { Command } from 'commander';
-import { getAPIClient } from '../lib/api-client.js';
+import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
 
-export const blockTradesCommand = new Command('block-trades')
+export function createBlockTradesCommand() {
+  const command = new Command('block-trades');
+
+  command
   .alias('blocks')
   .description('Show block transactions (institutional trading activity)')
   .option('--min-value <amount>', 'Filter by minimum value in millions (e.g., 10 for 10M Tk)')
@@ -15,7 +18,7 @@ export const blockTradesCommand = new Command('block-trades')
   .option('-t, --toon', 'Output in TOON format')
   .action(async (options) => {
     const spinner = ora('Fetching block trades data...').start();
-    const client = getAPIClient();
+    const client = new DseApiClient();
 
     try {
       const format = options.json ? 'json' : options.markdown ? 'markdown' : options.toon ? 'toon' : 'table';
@@ -129,3 +132,6 @@ export const blockTradesCommand = new Command('block-trades')
       process.exit(1);
     }
   });
+
+  return command;
+}

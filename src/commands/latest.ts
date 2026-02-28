@@ -1,4 +1,4 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
@@ -15,9 +15,10 @@ const SORT_DESCRIPTIONS: Record<LatestType, string> = {
   'debt': 'Debt Board (Treasury Bonds)',
 };
 
-export function latestCommand(program: Command): void {
-  program
-    .command('latest')
+export function createLatestCommand() {
+  const command = new Command('latest');
+
+  command
     .description('Get latest stock data for all instruments')
     .option('--by-change', 'Sort by % change')
     .option('--by-value', 'Sort by value')
@@ -63,4 +64,6 @@ export function latestCommand(program: Command): void {
         process.exit(1);
       }
     });
+
+  return command;
 }

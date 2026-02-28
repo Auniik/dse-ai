@@ -1,21 +1,23 @@
 import { Command } from 'commander';
 import ora from 'ora';
 import chalk from 'chalk';
-import { getAPIClient } from '../lib/api-client.js';
+import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import type { SectorPE, SectorStock } from '../lib/scrapers/sector-scraper.js';
 
-export const sectorsCommand = new Command()
-  .name('sectors')
-  .description('Get sectoral P/E ratios and performance')
-  .option('--sector <name>', 'Get stocks for a specific sector (e.g., Bank, IT Sector)')
-  .option('--area <id>', 'Get stocks for a sector by area ID')
-  .option('-j, --json', 'Output in JSON format')
-  .option('-m, --markdown', 'Output in Markdown format')
-  .option('-t, --toon', 'Output in TOON format')
-  .action(async (options) => {
-    const spinner = ora('Fetching sector data...').start();
-    const client = getAPIClient();
+export function createSectorsCommand() {
+  const command = new Command('sectors');
+
+  command
+    .description('Get sectoral P/E ratios and performance')
+    .option('--sector <name>', 'Get stocks for a specific sector (e.g., Bank, IT Sector)')
+    .option('--area <id>', 'Get stocks for a sector by area ID')
+    .option('-j, --json', 'Output in JSON format')
+    .option('-m, --markdown', 'Output in Markdown format')
+    .option('-t, --toon', 'Output in TOON format')
+    .action(async (options) => {
+      const spinner = ora('Fetching sector data...').start();
+      const client = new DseApiClient();
 
     try {
       const format = options.json ? 'json' : options.markdown ? 'markdown' : options.toon ? 'toon' : 'table';
@@ -115,3 +117,6 @@ export const sectorsCommand = new Command()
       process.exit(1);
     }
   });
+
+  return command;
+}

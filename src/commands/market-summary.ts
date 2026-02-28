@@ -1,11 +1,13 @@
 import { Command } from 'commander';
 import ora from 'ora';
 import chalk from 'chalk';
-import { getAPIClient } from '../lib/api-client.js';
+import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 
-export const marketSummaryCommand = new Command()
-  .name('market-summary')
+export function createMarketSummaryCommand() {
+  const command = new Command('market-summary');
+
+  command
   .alias('summary')
   .description('Get recent market information and highest records')
   .option('--records', 'Show only highest records')
@@ -16,7 +18,7 @@ export const marketSummaryCommand = new Command()
   .option('-t, --toon', 'Output in TOON format')
   .action(async (options) => {
     const spinner = ora('Fetching market summary...').start();
-    const client = getAPIClient();
+    const client = new DseApiClient();
 
     try {
       const format = options.json ? 'json' : options.markdown ? 'markdown' : options.toon ? 'toon' : 'table';
@@ -91,3 +93,6 @@ export const marketSummaryCommand = new Command()
       process.exit(1);
     }
   });
+
+  return command;
+}

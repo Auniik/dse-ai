@@ -1,12 +1,13 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
 
-export function top30Command(program: Command): void {
-  program
-    .command('top30')
+export function createTop30Command() {
+  const command = new Command('top30');
+
+  command
     .description('Get top 30 performing stocks')
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
@@ -37,4 +38,6 @@ export function top30Command(program: Command): void {
         process.exit(1);
       }
     });
+
+  return command;
 }

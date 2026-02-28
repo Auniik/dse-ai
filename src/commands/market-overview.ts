@@ -1,10 +1,13 @@
 import { Command } from 'commander';
-import { getAPIClient } from '../lib/api-client.js';
+import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
 
-export const marketOverviewCommand = new Command('market-overview')
+export function createMarketOverviewCommand() {
+  const command = new Command('market-overview');
+
+  command
   .alias('overview')
   .description('Get comprehensive market overview with category stats, transactions, and market cap')
   .option('--categories', 'Show only category statistics')
@@ -15,7 +18,7 @@ export const marketOverviewCommand = new Command('market-overview')
   .option('-t, --toon', 'Output in TOON format')
   .action(async (options) => {
     const spinner = ora('Fetching market overview...').start();
-    const client = getAPIClient();
+    const client = new DseApiClient();
 
     try {
       const format = options.json ? 'json' : options.markdown ? 'markdown' : options.toon ? 'toon' : 'table';
@@ -167,3 +170,6 @@ export const marketOverviewCommand = new Command('market-overview')
       process.exit(1);
     }
   });
+
+  return command;
+}

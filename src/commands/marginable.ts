@@ -1,10 +1,13 @@
 import { Command } from 'commander';
-import { getAPIClient } from '../lib/api-client.js';
+import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
 
-export const marginableCommand = new Command('marginable')
+export function createMarginableCommand() {
+  const command = new Command('marginable');
+
+  command
   .alias('margin')
   .description('Show stocks eligible for margin financing')
   .option('--category <cat>', 'Filter by category (A, B, N, Z)')
@@ -14,7 +17,7 @@ export const marginableCommand = new Command('marginable')
   .option('-t, --toon', 'Output in TOON format')
   .action(async (options) => {
     const spinner = ora('Fetching marginable securities...').start();
-    const client = getAPIClient();
+    const client = new DseApiClient();
 
     try {
       const format = options.json ? 'json' : options.markdown ? 'markdown' : options.toon ? 'toon' : 'table';
@@ -120,3 +123,6 @@ export const marginableCommand = new Command('marginable')
       process.exit(1);
     }
   });
+
+  return command;
+}

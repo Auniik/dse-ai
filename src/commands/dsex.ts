@@ -1,13 +1,15 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
 
-export function dsexCommand(program: Command): void {
-  program
-    .command('dsex [symbol]')
+export function createDsexCommand() {
+  const command = new Command('dsex');
+
+  command
     .description('Get DSEX market data with optional symbol filter')
+    .argument('[symbol]', 'Optional trading symbol to filter')
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
     .option('-t, --toon', 'Output as TOON (compact for LLMs)')
@@ -46,4 +48,6 @@ export function dsexCommand(program: Command): void {
         process.exit(1);
       }
     });
+
+  return command;
 }

@@ -1,10 +1,13 @@
 import { Command } from 'commander';
-import { getAPIClient } from '../lib/api-client.js';
+import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
 
-export const globalMarketsCommand = new Command('global-markets')
+export function createGlobalMarketsCommand() {
+  const command = new Command('global-markets');
+
+  command
   .alias('global')
   .description('Compare DSE with international stock markets')
   .option('--region <name>', 'Filter by region (e.g., "Asia Pacific", "Europe")')
@@ -14,7 +17,7 @@ export const globalMarketsCommand = new Command('global-markets')
   .option('-t, --toon', 'Output in TOON format')
   .action(async (options) => {
     const spinner = ora('Fetching global markets data...').start();
-    const client = getAPIClient();
+    const client = new DseApiClient();
 
     try {
       const format = options.json ? 'json' : options.markdown ? 'markdown' : options.toon ? 'toon' : 'table';
@@ -118,3 +121,6 @@ export const globalMarketsCommand = new Command('global-markets')
       process.exit(1);
     }
   });
+
+  return command;
+}

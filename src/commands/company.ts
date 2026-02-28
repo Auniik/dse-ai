@@ -6,13 +6,16 @@ import { DseApiClient } from '../lib/api-client.js';
 import { encode as toonEncode } from '@toon-format/toon';
 import type { CompanyInfo } from '../lib/scrapers/company-scraper.js';
 
-export const companyCommand = new Command('company')
-  .description('Get company financial information')
-  .argument('<symbol>', 'Trading code/symbol (e.g., CITYBANK, GP)')
-  .option('-j, --json', 'Output in JSON format')
-  .option('-m, --markdown', 'Output in Markdown format')
-  .option('--toon', 'Output in TOON format')
-  .action(async (symbol: string, options) => {
+export function createCompanyCommand() {
+  const command = new Command('company');
+
+  command
+    .description('Get company financial information')
+    .argument('<symbol>', 'Trading code/symbol (e.g., CITYBANK, GP)')
+    .option('-j, --json', 'Output in JSON format')
+    .option('-m, --markdown', 'Output in Markdown format')
+    .option('--toon', 'Output in TOON format')
+    .action(async (symbol: string, options) => {
     const spinner = ora('Fetching company information...').start();
 
     try {
@@ -270,6 +273,9 @@ export const companyCommand = new Command('company')
       process.exit(1);
     }
   });
+
+  return command;
+}
 
 function formatMarkdown(data: CompanyInfo, dateHeader: string): string {
   let md = `# ${data.companyName} (${data.tradingCode})\n\n`;

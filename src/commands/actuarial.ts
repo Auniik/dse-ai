@@ -1,10 +1,13 @@
 import { Command } from 'commander';
-import { getAPIClient } from '../lib/api-client.js';
+import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
 
-export const actuarialCommand = new Command('actuarial')
+export function createActuarialCommand() {
+  const command = new Command('actuarial');
+
+  command
   .alias('insurance')
   .description('Show actuarial valuation status for insurance companies')
   .option('--compliant', 'Show only compliant companies')
@@ -14,7 +17,7 @@ export const actuarialCommand = new Command('actuarial')
   .option('-t, --toon', 'Output in TOON format')
   .action(async (options) => {
     const spinner = ora('Fetching actuarial valuation status...').start();
-    const client = getAPIClient();
+    const client = new DseApiClient();
 
     try {
       const format = options.json ? 'json' : options.markdown ? 'markdown' : options.toon ? 'toon' : 'table';
@@ -106,3 +109,6 @@ export const actuarialCommand = new Command('actuarial')
       process.exit(1);
     }
   });
+
+  return command;
+}

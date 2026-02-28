@@ -1,12 +1,13 @@
-import type { Command } from 'commander';
+import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
 
-export function historicalCommand(program: Command): void {
-  program
-    .command('historical')
+export function createHistoricalCommand() {
+  const command = new Command('historical');
+
+  command
     .description('Get historical stock data for a date range')
     .requiredOption('-s, --start <date>', 'Start date (YYYY-MM-DD)')
     .requiredOption('-e, --end <date>', 'End date (YYYY-MM-DD)')
@@ -51,4 +52,6 @@ export function historicalCommand(program: Command): void {
         process.exit(1);
       }
     });
+
+  return command;
 }
