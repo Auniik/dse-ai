@@ -11,6 +11,7 @@ import { historicalCommand } from './commands/historical.js';
 import { gainersCommand } from './commands/gainers.js';
 import { losersCommand } from './commands/losers.js';
 import { companyCommand } from './commands/company.js';
+import { marketStatsCommand } from './commands/market-stats.js';
 
 const program = new Command();
 
@@ -27,6 +28,7 @@ historicalCommand(program);
 gainersCommand(program);
 losersCommand(program);
 program.addCommand(companyCommand);
+marketStatsCommand(program);
 
 program.parse(process.argv);
 

@@ -2,19 +2,19 @@
 
 **Project**: dse-ai - AI-friendly CLI for Dhaka Stock Exchange data analysis  
 **Goal**: Provide comprehensive market data for AI-powered investment recommendations  
-**Current Status**: Phase 1 at 50% (8 commands total) 🚀
+**Current Status**: Phase 1 at 75% (9 commands total) 🚀
 
 ---
 
 ## Progress Overview
 
 - **Phase 0 (Foundation)**: ✅ 100% Complete (5/5)
-- **Phase 1 (Quick Wins)**: 🟡 50% Complete (2/4)
+- **Phase 1 (Quick Wins)**: 🟡 75% Complete (3/4)
 - **Phase 2 (Fundamental Analysis)**: ⬜ 0% Complete (0/4)
 - **Phase 3 (Advanced Analysis)**: ⬜ 0% Complete (0/4)
 - **Phase 4 (Specialized)**: ⬜ 0% Complete (0/4)
 
-**Overall Progress**: 38% (8/21 total features)
+**Overall Progress**: 43% (9/21 total features)
 
 ---
 
@@ -38,6 +38,7 @@ Core market data commands - **Status: 5/5 Complete**
 - [x] `dse-ai gainers` - Top 10 daily gainers (Phase 1.1)
 - [x] `dse-ai losers` - Top 10 daily losers (Phase 1.1)
 - [x] `dse-ai company <SYMBOL>` - Company financials & fundamentals (Phase 1.2)
+- [x] `dse-ai market-stats` (alias: `stats`) - Market statistics & overview (Phase 1.3)
 
 ### Features:
 - [x] Full date/time headers from DSE website
@@ -53,7 +54,7 @@ Core market data commands - **Status: 5/5 Complete**
 
 **Priority**: HIGH  
 **Target**: 4 new commands  
-**Status**: 2/4 Complete  
+**Status**: 3/4 Complete  
 **Estimated Effort**: 2-3 days
 
 ### 1.1 Top Gainers/Losers ✅
@@ -97,26 +98,23 @@ Core market data commands - **Status: 5/5 Complete**
 - [x] Update `src/lib/api-client.ts`
 - [x] Update README with company command
 - [x] **AI Value**: Fundamental analysis, valuation metrics, dividend screening
-  - [ ] Add tests
-- [ ] Create `src/lib/scrapers/company-scraper.ts`
-- [ ] Create `src/commands/company.ts`
-- [ ] Add company data TypeScript interfaces
-- [ ] Update README
-- [ ] **AI Value**: Fundamental analysis, valuation metrics, investment scoring
 
-### 1.3 Market Statistics [ ]
-- [ ] Command: `dse-ai market-stats`
-  - [ ] Scrape `market-statistics.php`
-  - [ ] Parse market overview data
-  - [ ] Extract sector performance
-  - [ ] Parse index performance (DSEX, DSES, DS30)
-  - [ ] Extract market breadth (advances/declines)
-  - [ ] Support all output formats
-  - [ ] Add tests
-- [ ] Create `src/lib/scrapers/market-stats-scraper.ts`
-- [ ] Create `src/commands/market-stats.ts`
-- [ ] Update README
-- [ ] **AI Value**: Sector rotation analysis, market health indicators
+### 1.3 Market Statistics ✅
+- [x] Command: `dse-ai market-stats` (alias: `stats`)
+  - [x] Scrape `market-statistics.php`
+  - [x] Parse market overview data
+  - [x] Extract category performance (A, B, N, Z, MF, CB, G-Sec)
+  - [x] Parse market breadth (advanced/declined/unchanged by category)
+  - [x] Extract total transactions (trades, volume, value)
+  - [x] Parse market capitalization (equity, MF, debt)
+  - [x] Extract block trade data (42+ daily transactions)
+  - [x] Add --no-block flag to hide block trades
+  - [x] Support all output formats
+- [x] Create `src/lib/scrapers/market-stats-scraper.ts`
+- [x] Create `src/commands/market-stats.ts`
+- [x] Update `src/lib/api-client.ts`
+- [x] Update README
+- [x] **AI Value**: Market sentiment analysis, breadth indicators, large block detection
 
 ### 1.4 Circuit Breaker Status [ ]
 - [ ] Command: `dse-ai circuit`

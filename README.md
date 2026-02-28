@@ -45,6 +45,11 @@ dse-ai losers                 # Top 10 losers of the day
 dse-ai company CITYBANK       # Get detailed company info
 dse-ai company GP             # Get Grameenphone details
 
+# Get market statistics and overview
+dse-ai market-stats           # Full market overview with block trades
+dse-ai stats                  # Alias for market-stats
+dse-ai stats --no-block       # Hide block trades table
+
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN
