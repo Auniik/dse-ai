@@ -67,6 +67,17 @@ dse-ai summary                # Alias
 dse-ai summary --records      # Show only highest records
 dse-ai summary --recent --days 30  # Show recent 30 days
 
+# Get risk screening - going concern threats
+dse-ai risk-screen            # Show companies with bankruptcy/delisting threats
+dse-ai risk                   # Alias
+
+# Get block trades (institutional activity)
+dse-ai block-trades           # Show all block transactions
+dse-ai blocks                 # Alias
+dse-ai blocks --top 10        # Show top 10 by value
+dse-ai blocks --min-value 20  # Filter trades >= 20M Tk
+dse-ai blocks --symbol GP     # Filter by instrument code
+
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN

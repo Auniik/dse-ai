@@ -15,6 +15,8 @@ import { marketStatsCommand } from './commands/market-stats.js';
 import { circuitCommand } from './commands/circuit.js';
 import { sectorsCommand } from './commands/sectors.js';
 import { marketSummaryCommand } from './commands/market-summary.js';
+import { riskCommand } from './commands/risk-screen.js';
+import { blockTradesCommand } from './commands/block-trades.js';
 
 const program = new Command();
 
@@ -35,6 +37,8 @@ marketStatsCommand(program);
 circuitCommand(program);
 program.addCommand(sectorsCommand);
 program.addCommand(marketSummaryCommand);
+program.addCommand(riskCommand);
+program.addCommand(blockTradesCommand);
 
 program.parse(process.argv);
 

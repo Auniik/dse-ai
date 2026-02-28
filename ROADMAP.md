@@ -11,10 +11,10 @@
 - **Phase 0 (Foundation)**: ✅ 100% Complete (5/5)
 - **Phase 1 (Quick Wins)**: ✅ 100% Complete (4/4)
 - **Phase 2 (Fundamental Analysis)**: ✅ 50% Complete (2/4)
-- **Phase 3 (Advanced Analysis)**: ⬜ 0% Complete (0/4)
+- **Phase 3 (Advanced Analysis)**: ✅ 50% Complete (2/4)
 - **Phase 4 (Specialized)**: ⬜ 0% Complete (0/4)
 
-**Overall Progress**: 57% (12/21 total features)
+**Overall Progress**: 67% (14/21 total features)
 
 ---
 
@@ -225,7 +225,7 @@ Core market data commands - **Status: 5/5 Complete**
 
 **Priority**: MEDIUM  
 **Target**: 4 new features  
-**Status**: 0/4 Complete  
+**Status**: 2/4 Complete ✅  
 **Estimated Effort**: 4-5 days
 
 ### 3.1 Monthly Reviews & Graphs [ ]
@@ -241,18 +241,27 @@ Core market data commands - **Status: 5/5 Complete**
 - [ ] Update README
 - [ ] **AI Value**: Long-term trend analysis, market cycle identification
 
-### 3.2 Block Transactions [ ]
-- [ ] Command: `dse-ai block-trades`
-  - [ ] Identify data source (check market statistics)
-  - [ ] Parse large block trades
-  - [ ] Extract institutional activity
-  - [ ] Add flag: `--min-value <AMOUNT>` for filtering
-  - [ ] Support all output formats
-  - [ ] Add tests
-- [ ] Create `src/lib/scrapers/block-trades-scraper.ts`
-- [ ] Create `src/commands/block-trades.ts`
-- [ ] Update README
-- [ ] **AI Value**: Institutional activity tracking, smart money flow
+### 3.2 Block Transactions ✅ COMPLETE
+- [x] Command: `dse-ai block-trades` (alias: `blocks`)
+  - [x] Data source identified: `mst.txt` (plain text file)
+  - [x] Parse block trades from fixed-width text format
+  - [x] Extract: instrument code, max/min price, trades, quantity, value
+  - [x] Add flag: `--min-value <AMOUNT>` for filtering (e.g., >= 20M Tk)
+  - [x] Add flag: `--symbol <CODE>` for instrument filter
+  - [x] Add flag: `--top <N>` to limit results (default: 20)
+  - [x] Support all output formats (table/json/markdown/toon)
+  - [x] Color-coded values (green: >=10M, yellow: >=5M)
+- [x] Create `src/lib/scrapers/block-trades-scraper.ts`
+- [x] Create `src/commands/block-trades.ts`
+- [x] Update README with examples
+- [x] **AI Value**: Track institutional activity & smart money flow
+
+**Implementation Details:**
+- **URL**: `https://www.dsebd.org/mst.txt`
+- **Data**: 43 scrips, 124 trades, 5.5M shares, 617.7M Tk (on Feb 26)
+- **Format**: Plain text (fixed-width) - easier than HTML!
+- **Top Trades**: ORIONINFU (234.8M), GP (188.2M), RENATA (45.8M)
+- **Use Case**: Identify where big institutional players are investing
 
 ### 3.3 Corporate Announcements [ ]
 - [ ] Command: `dse-ai announcements`
@@ -269,18 +278,23 @@ Core market data commands - **Status: 5/5 Complete**
 - [ ] Update README
 - [ ] **AI Value**: Event-driven trading, news sentiment
 
-### 3.4 Going Concern Threat List [ ]
-- [ ] Command: `dse-ai risk-screen`
-  - [ ] Identify going concern data source
-  - [ ] Parse companies at bankruptcy risk
-  - [ ] Extract delisting threats
-  - [ ] Combine with compliance data
-  - [ ] Support all output formats
-  - [ ] Add tests
-- [ ] Create `src/lib/scrapers/risk-scraper.ts`
-- [ ] Create `src/commands/risk-screen.ts`
-- [ ] Update README
-- [ ] **AI Value**: Critical risk avoidance
+### 3.4 Going Concern Threat List ✅ COMPLETE
+- [x] Command: `dse-ai risk-screen` (alias: `risk`)
+  - [x] Scrape `going-concern-threat-list.php`
+  - [x] Parse companies at bankruptcy risk
+  - [x] Display trading code, company name, and threat status
+  - [x] Support all output formats (table/json/markdown/toon)
+  - [x] Color-coded risk warnings
+- [x] Create `src/lib/scrapers/risk-scraper.ts`
+- [x] Create `src/commands/risk-screen.ts`
+- [x] Update README with examples
+- [x] **AI Value**: Critical risk avoidance - flags companies facing bankruptcy/delisting
+
+**Implementation Details:**
+- **URL**: `https://dsebd.org/going-concern-threat-list.php`
+- **Data**: Trading code, company name, going concern status
+- **Output**: Currently shows 35 companies with threats
+- **Use Case**: Automatically filter out high-risk companies from investment pool
 
 ---
 

@@ -9,6 +9,8 @@ import { getMarketStatistics, type MarketStatistics } from './scrapers/market-st
 import { getCircuitBreakers, getCircuitBreakersHit, type CircuitBreakerData } from './scrapers/circuit-scraper.js';
 import { scrapeSectoralPE, scrapeSectorStocks, type SectorPE, type SectorStock } from './scrapers/sector-scraper.js';
 import { scrapeMarketSummary, type HighestRecord, type DailyMarketInfo } from './scrapers/market-summary-scraper.js';
+import { scrapeGoingConcernThreats, type GoingConcernThreat, type RiskData } from './scrapers/risk-scraper.js';
+import { scrapeBlockTrades, type BlockTrade, type BlockTradesData } from './scrapers/block-trades-scraper.js';
 
 export class DseApiClient {
   async getLatest(type: LatestType = 'trade-code'): Promise<{ data: StockData[]; date: string }> {
@@ -74,6 +76,18 @@ export class DseApiClient {
 
   async getMarketSummary(): Promise<{ highestRecords: HighestRecord[]; recentData: DailyMarketInfo[] }> {
     return scrapeMarketSummary();
+  }
+
+  async getGoingConcernThreats(): Promise<RiskData> {
+    const response = await fetch('https://www.dsebd.org/going-concern-threat-list.php');
+    const html = await response.text();
+    return scrapeGoingConcernThreats(html);
+  }
+
+  async getBlockTrades(): Promise<BlockTradesData> {
+    const response = await fetch('https://www.dsebd.org/mst.txt');
+    const text = await response.text();
+    return scrapeBlockTrades(text);
   }
 }
 
