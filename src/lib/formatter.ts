@@ -70,5 +70,12 @@ export function formatMarkdown(data: StockData[]): string {
 }
 
 export function formatToon(data: any): string {
-  return toonEncode(data);
+  // Deep clean any remaining newlines in the data before encoding
+  const cleaned = JSON.parse(JSON.stringify(data, (key, value) => {
+    if (typeof value === 'string') {
+      return value.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+    return value;
+  }));
+  return toonEncode(cleaned);
 }

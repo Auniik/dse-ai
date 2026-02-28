@@ -1,3 +1,7 @@
+import { fetchWithRetry } from './common.js';
+
+const BASE_URL = 'https://www.dsebd.org';
+
 export interface BlockTrade {
   instrCode: string;
   maxPrice: string;
@@ -17,8 +21,11 @@ export interface BlockTradesData {
   totalScrips: number;
 }
 
-export async function scrapeBlockTrades(text: string): Promise<BlockTradesData> {
-  const lines = text.split('\n');
+export async function scrapeBlockTrades(): Promise<BlockTradesData> {
+  try {
+    const url = `${BASE_URL}/mst.txt`;
+    const text = await fetchWithRetry(url);
+    const lines = text.split('\n');
   
   // Find date from header
   let date = 'N/A';
@@ -91,4 +98,7 @@ export async function scrapeBlockTrades(text: string): Promise<BlockTradesData> 
     totalValue,
     totalScrips
   };
+  } catch (error) {
+    throw new Error(`Failed to scrape block trades: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }

@@ -41,13 +41,14 @@ export interface MarketStatistics {
   blockTrades: BlockTrade[];
 }
 
-export async function getMarketStatistics(): Promise<{ data: MarketStatistics; date: string }> {
-  const url = `${BASE_URL}/market-statistics.php`;
-  const html = await fetchWithRetry(url);
-  const $ = cheerio.load(html);
+export async function scrapeMarketStatistics(): Promise<{ data: MarketStatistics; date: string }> {
+  try {
+    const url = `${BASE_URL}/market-statistics.php`;
+    const html = await fetchWithRetry(url);
+    const $ = cheerio.load(html);
 
-  // Get the pre-formatted text
-  const preText = $('pre').text();
+    // Get the pre-formatted text
+    const preText = $('pre').text();
   
   // Extract date from header
   const dateMatch = preText.match(/TODAY'S SHARE MARKET\s*:\s*(\d{4}-\d{2}-\d{2})/);
@@ -138,4 +139,7 @@ export async function getMarketStatistics(): Promise<{ data: MarketStatistics; d
   };
 
   return { data, date };
+  } catch (error) {
+    throw new Error(`Failed to scrape market statistics: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }

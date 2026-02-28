@@ -25,41 +25,45 @@ export async function scrapeFinancialCompliance(
   symbol?: string,
   quarters?: string[]
 ): Promise<FinancialComplianceData> {
-  const url = 'https://www.dsebd.org/ajax/load-financial-upload-status.php';
-  
-  // Build form data
-  const formData = new URLSearchParams();
-  
-  if (symbol) {
-    formData.append('tradeCode', symbol);
-  } else {
-    formData.append('tradeCode', '');
-  }
-  
-  // If no quarters specified, get all by sending all quarter types
-  if (!quarters || quarters.length === 0) {
-    formData.append('quarters[]', 'Q1');
-    formData.append('quarters[]', 'Q2');
-    formData.append('quarters[]', 'Q3');
-    formData.append('quarters[]', 'Annual');
-  } else {
-    quarters.forEach(q => {
-      formData.append('quarters[]', q);
+  try {
+    const url = 'https://www.dsebd.org/ajax/load-financial-upload-status.php';
+    
+    // Build form data
+    const formData = new URLSearchParams();
+    
+    if (symbol) {
+      formData.append('tradeCode', symbol);
+    } else {
+      formData.append('tradeCode', '');
+    }
+    
+    // If no quarters specified, get all by sending all quarter types
+    if (!quarters || quarters.length === 0) {
+      formData.append('quarters[]', 'Q1');
+      formData.append('quarters[]', 'Q2');
+      formData.append('quarters[]', 'Q3');
+      formData.append('quarters[]', 'Annual');
+    } else {
+      quarters.forEach(q => {
+        formData.append('quarters[]', q);
+      });
+    }
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-Requested-With': 'XMLHttpRequest',
+        'User-Agent': 'Mozilla/5.0 (compatible; dse-ai/1.0)',
+      },
+      body: formData.toString()
     });
+    
+    const html = await response.text();
+    return parseFinancialCompliance(html, symbol);
+  } catch (error) {
+    throw new Error(`Failed to scrape financial compliance: ${error instanceof Error ? error.message : String(error)}`);
   }
-  
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      'X-Requested-With': 'XMLHttpRequest',
-      'User-Agent': 'Mozilla/5.0 (compatible; dse-ai/1.0)',
-    },
-    body: formData.toString()
-  });
-  
-  const html = await response.text();
-  return parseFinancialCompliance(html, symbol);
 }
 
 function parseFinancialCompliance(html: string, symbol?: string): FinancialComplianceData {

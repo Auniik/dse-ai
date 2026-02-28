@@ -1,4 +1,7 @@
 import * as cheerio from 'cheerio';
+import { fetchWithRetry } from './common.js';
+
+const BASE_URL = 'https://www.dsebd.org';
 
 export interface GlobalMarket {
   country: string;
@@ -18,12 +21,15 @@ export interface GlobalMarketsData {
   regions: string[];
 }
 
-export async function scrapeGlobalMarkets(html: string): Promise<GlobalMarketsData> {
-  const $ = cheerio.load(html);
-  
-  const markets: GlobalMarket[] = [];
-  let currentRegion = '';
-  const regions: string[] = [];
+export async function scrapeGlobalMarkets(): Promise<GlobalMarketsData> {
+  try {
+    const url = `${BASE_URL}/markets.php`;
+    const html = await fetchWithRetry(url);
+    const $ = cheerio.load(html);
+    
+    const markets: GlobalMarket[] = [];
+    let currentRegion = '';
+    const regions: string[] = [];
   
   $('table.table-bordered tr').each((_, row) => {
     const cells = $(row).find('td');
@@ -68,4 +74,7 @@ export async function scrapeGlobalMarkets(html: string): Promise<GlobalMarketsDa
     data: markets,
     regions
   };
+  } catch (error) {
+    throw new Error(`Failed to scrape global markets: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }

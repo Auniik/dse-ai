@@ -63,17 +63,18 @@ export interface CompanyInfo {
   };
 }
 
-export async function getCompany(symbol: string): Promise<{ data: CompanyInfo | null; date: string }> {
-  const url = `${BASE_URL}/displayCompany.php?name=${symbol.toUpperCase()}`;
-  const html = await fetchWithRetry(url);
-  const $ = cheerio.load(html);
+export async function scrapeCompany(symbol: string): Promise<{ data: CompanyInfo | null; date: string }> {
+  try {
+    const url = `${BASE_URL}/displayCompany.php?name=${symbol.toUpperCase()}`;
+    const html = await fetchWithRetry(url);
+    const $ = cheerio.load(html);
 
-  // Extract company name
-  const companyName = $('h2.BodyHead').first().text().replace('Company Name:', '').trim();
-  
-  if (!companyName) {
-    return { data: null, date: '' };
-  }
+    // Extract company name
+    const companyName = $('h2.BodyHead').first().text().replace('Company Name:', '').trim();
+    
+    if (!companyName) {
+      return { data: null, date: '' };
+    }
 
   // Extract market date
   const dateHeader = $('h2:contains("Market Information")').first().text();
@@ -247,6 +248,9 @@ export async function getCompany(symbol: string): Promise<{ data: CompanyInfo | 
   if (publicMatch) data.shareholding.public = publicMatch[1];
 
   return { data, date };
+  } catch (error) {
+    throw new Error(`Failed to scrape company info: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }
 
 function parseKeyValue(key: string, value: string, data: CompanyInfo, $element?: cheerio.Cheerio<any>): void {

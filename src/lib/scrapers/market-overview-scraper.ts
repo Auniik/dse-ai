@@ -1,3 +1,7 @@
+import { fetchWithRetry } from './common.js';
+
+const BASE_URL = 'https://www.dsebd.org';
+
 export interface CategoryStats {
   category: string;
   advanced: number;
@@ -27,8 +31,11 @@ export interface MarketOverviewData {
   marketCap: MarketCapitalization;
 }
 
-export async function scrapeMarketOverview(text: string): Promise<MarketOverviewData> {
-  const lines = text.split('\n');
+export async function scrapeMarketOverview(): Promise<MarketOverviewData> {
+  try {
+    const url = `${BASE_URL}/mst.txt`;
+    const text = await fetchWithRetry(url);
+    const lines = text.split('\n');
   
   // Extract date
   let date = 'N/A';
@@ -139,4 +146,7 @@ export async function scrapeMarketOverview(text: string): Promise<MarketOverview
     transactions,
     marketCap
   };
+  } catch (error) {
+    throw new Error(`Failed to scrape market overview: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }

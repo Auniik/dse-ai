@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import type { StockData } from '../../types/index.js';
-import { fetchWithRetry, parseTable, extractDate } from './common.js';
+import { fetchWithRetry, parseTable, getDateHeader } from './common.js';
 
 const BASE_URL = 'https://dsebd.org';
 
@@ -16,13 +16,17 @@ const LATEST_URLS: Record<LatestType, string> = {
   'debt': `${BASE_URL}/latest_share_price_scroll_treasury_bond.php`,
 };
 
-export async function getLatest(type: LatestType = 'trade-code'): Promise<{ data: StockData[]; date: string }> {
-  const url = LATEST_URLS[type];
-  const html = await fetchWithRetry(url);
-  const $ = cheerio.load(html);
-  
-  const data = parseTable(html);
-  const dateHeader = $('.BodyHead.topBodyHead').first().text().trim();
-  
-  return { data, date: dateHeader };
+export async function scrapeLatest(type: LatestType = 'trade-code'): Promise<{ data: StockData[]; date: string }> {
+  try {
+    const url = LATEST_URLS[type];
+    const html = await fetchWithRetry(url);
+    const $ = cheerio.load(html);
+    
+    const data = parseTable(html);
+    const dateHeader = getDateHeader($);
+    
+    return { data, date: dateHeader };
+  } catch (error) {
+    throw new Error(`Failed to scrape latest prices: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }

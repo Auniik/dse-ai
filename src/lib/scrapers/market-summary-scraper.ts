@@ -25,12 +25,13 @@ export async function scrapeMarketSummary(): Promise<{
   highestRecords: HighestRecord[];
   recentData: DailyMarketInfo[];
 }> {
-  const url = 'https://www.dsebd.org/recent_market_information.php';
-  const html = await fetchWithRetry(url);
-  const $ = cheerio.load(html);
+  try {
+    const url = 'https://www.dsebd.org/recent_market_information.php';
+    const html = await fetchWithRetry(url);
+    const $ = cheerio.load(html);
 
-  const highestRecords: HighestRecord[] = [];
-  const recentData: DailyMarketInfo[] = [];
+    const highestRecords: HighestRecord[] = [];
+    const recentData: DailyMarketInfo[] = [];
 
   // Parse Highest Records table (first table)
   $('table.table-bordered').first().find('tr').each((index, row) => {
@@ -64,4 +65,7 @@ export async function scrapeMarketSummary(): Promise<{
   });
 
   return { highestRecords, recentData };
+  } catch (error) {
+    throw new Error(`Failed to scrape market summary: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }

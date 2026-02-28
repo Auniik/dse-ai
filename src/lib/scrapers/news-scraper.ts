@@ -1,4 +1,7 @@
 import * as cheerio from 'cheerio';
+import { fetchWithRetry, getDateHeader } from './common.js';
+
+const BASE_URL = 'https://www.dsebd.org';
 
 export interface NewsItem {
   tradingCode: string;
@@ -15,12 +18,30 @@ export interface NewsData {
   totalNews: number;
 }
 
-export function scrapeNews(html: string): NewsData {
-  const $ = cheerio.load(html);
-  const news: NewsItem[] = [];
+export async function scrapeNews(options?: { symbol?: string; startDate?: string; endDate?: string }): Promise<NewsData> {
+  try {
+    let url = `${BASE_URL}/old_news.php?archive=news`;
+    
+    if (options?.symbol) {
+      url += `&inst=${options.symbol}&criteria=3`;
+    } else if (options?.startDate && options?.endDate) {
+      url += `&startDate=${options.startDate}&endDate=${options.endDate}&criteria=4`;
+    } else {
+      // Default: last 30 days
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(endDate.getDate() - 30);
+      
+      const formatDate = (d: Date) => d.toISOString().split('T')[0];
+      url += `&startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&criteria=4`;
+    }
+    
+    const html = await fetchWithRetry(url);
+    const $ = cheerio.load(html);
+    const newsItems: NewsItem[] = [];
   
   // Extract date range or company info from header
-  const header = $('h2.BodyHead.topBodyHead').text().trim();
+  const header = getDateHeader($);
   let dateRange: string | undefined;
   let company: string | undefined;
   
@@ -50,7 +71,7 @@ export function scrapeNews(html: string): NewsData {
     if ($row.find('hr').length > 0) {
       // Save current news item if complete
       if (newsItem.tradingCode && newsItem.title && newsItem.postDate) {
-        news.push(newsItem as NewsItem);
+        newsItems.push(newsItem as NewsItem);
       }
       // Reset for next news item
       newsItem = {
@@ -75,13 +96,16 @@ export function scrapeNews(html: string): NewsData {
   
   // Don't forget the last news item
   if (newsItem.tradingCode && newsItem.title && newsItem.postDate) {
-    news.push(newsItem as NewsItem);
+    newsItems.push(newsItem as NewsItem);
   }
   
   return {
     dateRange,
     company,
-    news,
-    totalNews: news.length
+    news: newsItems,
+    totalNews: newsItems.length
   };
+  } catch (error) {
+    throw new Error(`Failed to scrape news: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }

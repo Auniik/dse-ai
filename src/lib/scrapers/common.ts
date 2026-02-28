@@ -25,29 +25,34 @@ export async function fetchWithRetry(url: string, maxRetries = 3): Promise<strin
   throw new Error('Failed to fetch data');
 }
 
-export function parseTable(html: string): any[] {
+export function parseTable(html: string, selector?: string): any[] {
   const $ = cheerio.load(html);
   const data: any[] = [];
 
   // Find the table with class 'shares-table' or 'table-bordered'
-  const table = $('table.shares-table, table.table-bordered').first();
+  const table = $(selector || 'table.shares-table, table.table-bordered').first();
   if (!table.length) return data;
 
-  // Get headers from first row
+  // Get headers from first row (check both thead and first tbody row)
   const headers: string[] = [];
-  table.find('tr').first().find('th').each((_, el) => {
-    headers.push($(el).text().trim());
+  table.find('thead tr th, tbody tr:first th, tr:first th').each((_, el) => {
+    const header = $(el).text().trim().replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ');
+    headers.push(header);
   });
 
-  // Parse data rows
-  table.find('tr').slice(1).each((_, row) => {
+  // Parse data rows (handle both tbody and direct tr)
+  const rows = table.find('tbody').length 
+    ? table.find('tbody tr')
+    : table.find('tr').slice(1);
+    
+  rows.each((_, row) => {
     const cells = $(row).find('td');
     if (cells.length === 0) return;
 
     const rowData: any = {};
     cells.each((idx, cell) => {
       if (idx < headers.length) {
-        const value = $(cell).text().trim().replace(/,/g, '');
+        const value = $(cell).text().trim().replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').replace(/,/g, '');
         rowData[headers[idx]] = value;
       }
     });
@@ -66,7 +71,8 @@ export function parseTableElement($: any, table: any): any[] {
 
   // Get headers
   table.find('tr').first().find('th').each((_: number, el: any) => {
-    headers.push($(el).text().trim());
+    const header = $(el).text().trim().replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ');
+    headers.push(header);
   });
 
   // Parse rows
@@ -77,7 +83,7 @@ export function parseTableElement($: any, table: any): any[] {
     const rowData: any = {};
     cells.each((idx: number, cell: any) => {
       if (idx < headers.length) {
-        const value = $(cell).text().trim().replace(/,/g, '');
+        const value = $(cell).text().trim().replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').replace(/,/g, '');
         rowData[headers[idx]] = value;
       }
     });
@@ -94,5 +100,10 @@ export function extractDate(text: string): string {
   // Extract date and time from text like "Latest Share Price On Feb 26, 2026 at 2:20 PM"
   // Return the full "On <date> at <time>" part
   const match = text.match(/[Oo]n\s+(.+)/i);
-  return match ? match[1].trim() : '';
+  return match ? match[1].trim() : text.trim();
+}
+
+export function getDateHeader($: any): string {
+  // Common pattern to extract date header from DSE pages
+  return $('.BodyHead.topBodyHead, h2.BodyHead.topBodyHead').first().text().trim();
 }
