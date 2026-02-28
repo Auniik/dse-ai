@@ -10,12 +10,12 @@
 
 - **Phase 0 (Foundation)**: ✅ 100% Complete (5/5)
 - **Phase 1 (Quick Wins)**: ✅ 100% Complete (4/4)
-- **Phase 2 (Fundamental Analysis)**: ✅ 50% Complete (2/4)
-- **Phase 3 (Advanced Analysis)**: ✅ 50% Complete (2/4)
+- **Phase 2 (Fundamental Analysis)**: ✅ 75% Complete (3/4) - 1 AJAX skipped
+- **Phase 3 (Advanced Analysis)**: ✅ 75% Complete (3/4) - 1 PDF skipped
 - **Phase 4 (Specialized)**: ⬜ 0% Complete (0/4)
 - **Bonus Features**: ✅ 4 Complete
 
-**Overall Progress**: 86% (18/21 total features + 4 bonus)**
+**Overall Progress**: 90% (19/21 total features + 4 bonus)**
 
 ---
 
@@ -257,11 +257,30 @@ Core market data commands - **Status: 5/5 Complete**
 - **Top Trades**: ORIONINFU (234.8M), GP (188.2M), RENATA (45.8M)
 - **Use Case**: Identify where big institutional players are investing
 
-### 3.3 Corporate Announcements ❌ SKIPPED (AJAX/PDF-based)
-- **Status**: Skipped - Requires AJAX POST handling or PDF parsing
-- **URL**: `corporate-announcement.php` uses `ajax/load-news.php`
-- **Reason**: AJAX endpoints require POST requests with form data
-- **Decision**: Skip for now, focus on simple HTTP GET scraping
+### 3.3 Corporate Announcements & News Archive ✅ COMPLETE
+- **Status**: Implemented - Uses simple HTTP GET (not AJAX)
+- **URL**: `old_news.php` with query parameters
+- **Implementation**: Simple HTML scraping, no AJAX required
+- [x] Command: `dse-ai news`
+  - [x] Scrape `old_news.php?startDate=X&endDate=Y&criteria=4` (date range)
+  - [x] Scrape `old_news.php?inst=SYMBOL&criteria=3` (by company)
+  - [x] Parse news items with trading code, title, content, date
+  - [x] Support --days (last N days), --symbol (company filter)
+  - [x] Support --start-date and --end-date for custom ranges
+  - [x] Support --limit for pagination
+  - [x] All output formats (table/json/markdown/toon)
+- [x] Create `src/lib/scrapers/news-scraper.ts`
+- [x] Create `src/commands/news.ts`
+- [x] Update README with examples
+- [x] **AI Value**: News sentiment analysis, event-driven trading signals
+
+**Implementation Details:**
+- **URL**: `https://dsebd.org/old_news.php`
+- **Parameters**: 
+  - `criteria=3`: Search by company symbol (inst parameter)
+  - `criteria=4`: Search by date range (startDate, endDate)
+- **Data**: Trading code, news title, news content, post date
+- **Default**: Last 30 days of news
 
 ### 3.4 Going Concern Threat List ✅ COMPLETE
 - [x] Command: `dse-ai risk-screen` (alias: `risk`)

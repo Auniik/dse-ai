@@ -15,6 +15,7 @@ import { scrapeMarketOverview, type MarketOverviewData } from './scrapers/market
 import { scrapeMarginableSecurities, type MarginableSecurity, type MarginableSecuritiesData } from './scrapers/marginable-scraper.js';
 import { scrapeGlobalMarkets, type GlobalMarket, type GlobalMarketsData } from './scrapers/global-markets-scraper.js';
 import { scrapeActuarialValuation, type ActuarialValuation, type ActuarialValuationData } from './scrapers/actuarial-scraper.js';
+import { scrapeNews, type NewsItem, type NewsData } from './scrapers/news-scraper.js';
 
 export class DseApiClient {
   async getLatest(type: LatestType = 'trade-code'): Promise<{ data: StockData[]; date: string }> {
@@ -116,6 +117,28 @@ export class DseApiClient {
     const response = await fetch('https://www.dsebd.org/actuarial-valuation-status.php');
     const html = await response.text();
     return scrapeActuarialValuation(html);
+  }
+
+  async getNews(options?: { symbol?: string; startDate?: string; endDate?: string }): Promise<NewsData> {
+    let url = 'https://www.dsebd.org/old_news.php?archive=news';
+    
+    if (options?.symbol) {
+      url += `&inst=${options.symbol}&criteria=3`;
+    } else if (options?.startDate && options?.endDate) {
+      url += `&startDate=${options.startDate}&endDate=${options.endDate}&criteria=4`;
+    } else {
+      // Default: last 30 days
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(endDate.getDate() - 30);
+      
+      const formatDate = (d: Date) => d.toISOString().split('T')[0];
+      url += `&startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&criteria=4`;
+    }
+    
+    const response = await fetch(url);
+    const html = await response.text();
+    return scrapeNews(html);
   }
 }
 

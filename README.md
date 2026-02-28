@@ -103,6 +103,15 @@ dse-ai insurance              # Alias
 dse-ai actuarial --compliant  # Show only compliant companies
 dse-ai actuarial --non-compliant  # Show only non-compliant
 
+# View news archive from DSE
+dse-ai news                   # Last 30 days of news (default)
+dse-ai news --days 7          # Last 7 days
+dse-ai news --symbol AGRANINS # All news for specific company
+dse-ai news --start-date 2026-02-01 --end-date 2026-02-28
+dse-ai news --limit 10        # Show only first 10 news items
+dse-ai news --json            # JSON format
+dse-ai news --markdown        # Markdown format
+
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN
