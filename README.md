@@ -112,6 +112,14 @@ dse-ai news --limit 10        # Show only first 10 news items
 dse-ai news --json            # JSON format
 dse-ai news --markdown        # Markdown format
 
+# Check financial statement compliance status
+dse-ai compliance --symbol AAMRANET    # All quarters for company
+dse-ai compliance --symbol AAMRANET --q1  # Only Q1 submissions
+dse-ai compliance --symbol AAMRANET --annual  # Only Annual reports
+dse-ai compliance --symbol AAMRANET --non-submitted  # Non-submitted only
+dse-ai compliance --symbol AAMRANET --delayed  # Delayed submissions only
+dse-ai compliance --symbol AAMRANET --json  # JSON format
+
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN

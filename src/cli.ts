@@ -22,6 +22,7 @@ import { marginableCommand } from './commands/marginable.js';
 import { globalMarketsCommand } from './commands/global-markets.js';
 import { actuarialCommand } from './commands/actuarial.js';
 import { createNewsCommand } from './commands/news.js';
+import { createComplianceCommand } from './commands/compliance.js';
 
 const program = new Command();
 
@@ -49,6 +50,7 @@ program.addCommand(marginableCommand);
 program.addCommand(globalMarketsCommand);
 program.addCommand(actuarialCommand);
 program.addCommand(createNewsCommand());
+program.addCommand(createComplianceCommand());
 
 program.parse(process.argv);
 
