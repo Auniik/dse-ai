@@ -14,6 +14,7 @@ import { companyCommand } from './commands/company.js';
 import { marketStatsCommand } from './commands/market-stats.js';
 import { circuitCommand } from './commands/circuit.js';
 import { sectorsCommand } from './commands/sectors.js';
+import { marketSummaryCommand } from './commands/market-summary.js';
 
 const program = new Command();
 
@@ -33,6 +34,7 @@ program.addCommand(companyCommand);
 marketStatsCommand(program);
 circuitCommand(program);
 program.addCommand(sectorsCommand);
+program.addCommand(marketSummaryCommand);
 
 program.parse(process.argv);
 

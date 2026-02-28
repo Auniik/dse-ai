@@ -8,6 +8,7 @@ import { getCompany, type CompanyInfo } from './scrapers/company-scraper.js';
 import { getMarketStatistics, type MarketStatistics } from './scrapers/market-stats-scraper.js';
 import { getCircuitBreakers, getCircuitBreakersHit, type CircuitBreakerData } from './scrapers/circuit-scraper.js';
 import { scrapeSectoralPE, scrapeSectorStocks, type SectorPE, type SectorStock } from './scrapers/sector-scraper.js';
+import { scrapeMarketSummary, type HighestRecord, type DailyMarketInfo } from './scrapers/market-summary-scraper.js';
 
 export class DseApiClient {
   async getLatest(type: LatestType = 'trade-code'): Promise<{ data: StockData[]; date: string }> {
@@ -69,6 +70,10 @@ export class DseApiClient {
 
   async getSectorStocks(areaId: string): Promise<{ data: SectorStock[]; date: string; sectorName: string }> {
     return scrapeSectorStocks(areaId);
+  }
+
+  async getMarketSummary(): Promise<{ highestRecords: HighestRecord[]; recentData: DailyMarketInfo[] }> {
+    return scrapeMarketSummary();
   }
 }
 

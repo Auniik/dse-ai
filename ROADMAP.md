@@ -2,7 +2,7 @@
 
 **Project**: dse-ai - AI-friendly CLI for Dhaka Stock Exchange data analysis  
 **Goal**: Provide comprehensive market data for AI-powered investment recommendations  
-**Current Status**: Phase 2 underway! (11 commands total) 🚀
+**Current Status**: Phase 2 halfway! (12 commands total) 🚀
 
 ---
 
@@ -10,11 +10,11 @@
 
 - **Phase 0 (Foundation)**: ✅ 100% Complete (5/5)
 - **Phase 1 (Quick Wins)**: ✅ 100% Complete (4/4)
-- **Phase 2 (Fundamental Analysis)**: 🟡 25% Complete (1/4)
+- **Phase 2 (Fundamental Analysis)**: ✅ 50% Complete (2/4)
 - **Phase 3 (Advanced Analysis)**: ⬜ 0% Complete (0/4)
 - **Phase 4 (Specialized)**: ⬜ 0% Complete (0/4)
 
-**Overall Progress**: 52% (11/21 total features)
+**Overall Progress**: 57% (12/21 total features)
 
 ---
 
@@ -41,6 +41,7 @@ Core market data commands - **Status: 5/5 Complete**
 - [x] `dse-ai market-stats` (alias: `stats`) - Market statistics & overview (Phase 1.3)
 - [x] `dse-ai circuit` - Circuit breaker status and limits (Phase 1.4)
 - [x] `dse-ai sectors` - Sectoral P/E ratios and performance (Phase 2.3)
+- [x] `dse-ai market-summary` (alias: `summary`) - Market summary & highest records (Phase 2.4)
 
 ### Features:
 - [x] Full date/time headers from DSE website
@@ -141,7 +142,7 @@ Core market data commands - **Status: 5/5 Complete**
 
 **Priority**: HIGH  
 **Target**: 4 new commands  
-**Status**: 1/4 Complete  
+**Status**: 2/4 Complete  
 **Estimated Effort**: 3-4 days
 
 ### 2.1 AGM/EGM and Record Dates [ ]
@@ -194,22 +195,29 @@ Core market data commands - **Status: 5/5 Complete**
 - [ ] Update README
 - [ ] **AI Value**: Sector-wise analysis, peer comparison
 
-### 2.4 Recent Market Information Daily Trends [ ]
-- [ ] Command: `dse-ai market-summary`
-  - [ ] Scrape `recent_market_information.php`
-  - [ ] Parse daily market metrics:
-    - [ ] Total Trade count
-    - [ ] Total Volume
-    - [ ] Total Value
-    - [ ] Market Capitalization
-  - [ ] Show historical trend (last 7-30 days)
-  - [ ] Add flag: `--days <N>` for custom range
-  - [ ] Support all output formats
-  - [ ] Add tests
-- [ ] Create `src/lib/scrapers/market-summary-scraper.ts`
-- [ ] Create `src/commands/market-summary.ts`
-- [ ] Update README
-- [ ] **AI Value**: Market activity trends, liquidity analysis
+### 2.4 Recent Market Information Daily Trends ✅
+- [x] Command: `dse-ai market-summary` (alias: `summary`)
+  - [x] Scrape `recent_market_information.php`
+  - [x] Parse highest records (all-time peaks):
+    - [x] Total trades, volume, value
+    - [x] Market capitalization
+    - [x] All indices (DSEX, DSES, DS30, DGEN)
+  - [x] Parse daily market metrics (last 30 days):
+    - [x] Total Trade count
+    - [x] Total Volume
+    - [x] Total Value
+    - [x] Market Capitalization
+    - [x] All index values
+  - [x] Show historical trend (configurable days)
+  - [x] Add flag: `--days <N>` for custom range (default: 10)
+  - [x] Add flag: `--records` for only highest records
+  - [x] Add flag: `--recent` for only daily data
+  - [x] Support all output formats
+- [x] Create `src/lib/scrapers/market-summary-scraper.ts`
+- [x] Create `src/commands/market-summary.ts`
+- [x] Update `src/lib/api-client.ts`
+- [x] Update README
+- [x] **AI Value**: Market activity trends, liquidity analysis, compare current vs historical peaks
 
 ---
 

@@ -61,6 +61,12 @@ dse-ai sectors                # Show all sectors with median P/E ratios
 dse-ai sectors --sector Bank  # Show all Bank sector stocks
 dse-ai sectors --area 11      # Show stocks by area ID
 
+# Get market summary and trends
+dse-ai market-summary         # Show highest records + recent 10 days
+dse-ai summary                # Alias
+dse-ai summary --records      # Show only highest records
+dse-ai summary --recent --days 30  # Show recent 30 days
+
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN
