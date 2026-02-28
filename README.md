@@ -50,6 +50,12 @@ dse-ai market-stats           # Full market overview with block trades
 dse-ai stats                  # Alias for market-stats
 dse-ai stats --no-block       # Hide block trades table
 
+# Get circuit breaker status
+dse-ai circuit                # Show circuit breaker hits
+dse-ai circuit --upper        # Show only upper circuit hits
+dse-ai circuit --lower        # Show only lower circuit hits
+dse-ai circuit --all          # Show all circuit breaker limits
+
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN
