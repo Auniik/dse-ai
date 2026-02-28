@@ -3,6 +3,8 @@ import { getLatest, type LatestType } from './scrapers/latest-scraper.js';
 import { getTop30, getTop20 } from './scrapers/top-scraper.js';
 import { getDsex } from './scrapers/dsex-scraper.js';
 import { getHistorical } from './scrapers/historical-scraper.js';
+import { getGainers, getLosers } from './scrapers/movers-scraper.js';
+import { getCompany, type CompanyInfo } from './scrapers/company-scraper.js';
 
 export class DseApiClient {
   async getLatest(type: LatestType = 'trade-code'): Promise<{ data: StockData[]; date: string }> {
@@ -32,6 +34,18 @@ export class DseApiClient {
 
   async getHistorical(startDate: string, endDate: string, inst?: string): Promise<{ data: StockData[]; date: string }> {
     return getHistorical(startDate, endDate, inst);
+  }
+
+  async getGainers(): Promise<{ data: StockData[]; date: string }> {
+    return getGainers();
+  }
+
+  async getLosers(): Promise<{ data: StockData[]; date: string }> {
+    return getLosers();
+  }
+
+  async getCompany(symbol: string): Promise<{ data: CompanyInfo | null; date: string }> {
+    return getCompany(symbol);
   }
 }
 

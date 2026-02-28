@@ -8,6 +8,9 @@ import { dsexCommand } from './commands/dsex.js';
 import { top30Command } from './commands/top30.js';
 import { top20Command } from './commands/top20.js';
 import { historicalCommand } from './commands/historical.js';
+import { gainersCommand } from './commands/gainers.js';
+import { losersCommand } from './commands/losers.js';
+import { companyCommand } from './commands/company.js';
 
 const program = new Command();
 
@@ -21,6 +24,9 @@ dsexCommand(program);
 top30Command(program);
 top20Command(program);
 historicalCommand(program);
+gainersCommand(program);
+losersCommand(program);
+program.addCommand(companyCommand);
 
 program.parse(process.argv);
 

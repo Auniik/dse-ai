@@ -1,0 +1,45 @@
+import type { Command } from 'commander';
+import chalk from 'chalk';
+import ora from 'ora';
+import { DseApiClient } from '../lib/api-client.js';
+import { formatStockTable, formatToon } from '../lib/formatter.js';
+
+export function gainersCommand(program: Command): void {
+  program
+    .command('gainers')
+    .description('Get top 10 gainers of the day')
+    .option('-j, --json', 'Output as JSON')
+    .option('-m, --markdown', 'Output as Markdown')
+    .option('-t, --toon', 'Output as TOON (compact for LLMs)')
+    .action(async (options) => {
+      const spinner = ora('Fetching top gainers...').start();
+
+      try {
+        const client = new DseApiClient();
+        const result = await client.getGainers();
+
+        if (result.data.length === 0) {
+          spinner.warn(chalk.yellow('No gainers data found'));
+          return;
+        }
+
+        spinner.succeed(chalk.green('Data fetched successfully!'));
+
+        if (options.json) {
+          console.log(JSON.stringify(result.data, null, 2));
+        } else if (options.markdown) {
+          const { formatMarkdown } = await import('../lib/formatter.js');
+          console.log(formatMarkdown(result.data));
+        } else if (options.toon) {
+          console.log(formatToon(result.data));
+        } else {
+          const title = result.date || 'Top 10 Gainers';
+          console.log(formatStockTable(result.data, `📈 ${title}`));
+        }
+      } catch (error) {
+        spinner.fail(chalk.red('Failed to fetch data'));
+        console.error(chalk.red(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`));
+        process.exit(1);
+      }
+    });
+}

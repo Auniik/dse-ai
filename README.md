@@ -37,6 +37,14 @@ dse-ai top20 --value          # Only by value
 dse-ai top20 --volume         # Only by volume
 dse-ai top20 --trade          # Only by trade
 
+# Get top 10 gainers and losers
+dse-ai gainers                # Top 10 gainers of the day
+dse-ai losers                 # Top 10 losers of the day
+
+# Get company financial information
+dse-ai company CITYBANK       # Get detailed company info
+dse-ai company GP             # Get Grameenphone details
+
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN
