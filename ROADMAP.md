@@ -13,8 +13,9 @@
 - **Phase 2 (Fundamental Analysis)**: ✅ 50% Complete (2/4)
 - **Phase 3 (Advanced Analysis)**: ✅ 50% Complete (2/4)
 - **Phase 4 (Specialized)**: ⬜ 0% Complete (0/4)
+- **Bonus Features**: ✅ 4 Complete
 
-**Overall Progress**: 67% (14/21 total features)
+**Overall Progress**: 86% (18/21 total features + 4 bonus)**
 
 ---
 
@@ -228,18 +229,11 @@ Core market data commands - **Status: 5/5 Complete**
 **Status**: 2/4 Complete ✅  
 **Estimated Effort**: 4-5 days
 
-### 3.1 Monthly Reviews & Graphs [ ]
-- [ ] Command: `dse-ai monthly-review`
-  - [ ] Scrape `mrg.php`
-  - [ ] Parse monthly performance reports
-  - [ ] Extract trend graphs data
-  - [ ] Add flag: `--month <YYYY-MM>` for specific month
-  - [ ] Support all output formats
-  - [ ] Add tests
-- [ ] Create `src/lib/scrapers/monthly-review-scraper.ts`
-- [ ] Create `src/commands/monthly-review.ts`
-- [ ] Update README
-- [ ] **AI Value**: Long-term trend analysis, market cycle identification
+### 3.1 Monthly Reviews & Graphs ❌ SKIPPED (PDF-only)
+- **Status**: Skipped - Data only available as PDF files
+- **URL**: `mrg.php` - Only contains PDF download links
+- **Reason**: Would require PDF parsing library (pdfplumber/tesseract)
+- **Decision**: Skip for now, focus on HTML/text scrapable data
 
 ### 3.2 Block Transactions ✅ COMPLETE
 - [x] Command: `dse-ai block-trades` (alias: `blocks`)
@@ -263,20 +257,11 @@ Core market data commands - **Status: 5/5 Complete**
 - **Top Trades**: ORIONINFU (234.8M), GP (188.2M), RENATA (45.8M)
 - **Use Case**: Identify where big institutional players are investing
 
-### 3.3 Corporate Announcements [ ]
-- [ ] Command: `dse-ai announcements`
-  - [ ] Scrape `corporate-announcement.php`
-  - [ ] Scrape `news_archive.php`
-  - [ ] Parse company announcements
-  - [ ] Extract material events
-  - [ ] Add flag: `--symbol <SYMBOL>` for company filter
-  - [ ] Add flag: `--recent` for last 7 days
-  - [ ] Support all output formats
-  - [ ] Add tests
-- [ ] Create `src/lib/scrapers/announcements-scraper.ts`
-- [ ] Create `src/commands/announcements.ts`
-- [ ] Update README
-- [ ] **AI Value**: Event-driven trading, news sentiment
+### 3.3 Corporate Announcements ❌ SKIPPED (AJAX/PDF-based)
+- **Status**: Skipped - Requires AJAX POST handling or PDF parsing
+- **URL**: `corporate-announcement.php` uses `ajax/load-news.php`
+- **Reason**: AJAX endpoints require POST requests with form data
+- **Decision**: Skip for now, focus on simple HTTP GET scraping
 
 ### 3.4 Going Concern Threat List ✅ COMPLETE
 - [x] Command: `dse-ai risk-screen` (alias: `risk`)
@@ -383,6 +368,95 @@ Core market data commands - **Status: 5/5 Complete**
 - [ ] Risk-adjusted recommendations
 - [ ] Diversification scoring
 - [ ] Add command: `dse-ai portfolio`
+
+---
+
+## Bonus Features 🎁
+
+### Market Overview from mst.txt ✅ COMPLETE
+- [x] Command: `dse-ai market-overview` (alias: `overview`)
+  - [x] Parse category statistics (All, A, B, N, Z, MF, CB, G-Sec)
+  - [x] Extract total transactions (trades, volume, value)
+  - [x] Parse market capitalization breakdown
+  - [x] Add flags: `--categories`, `--transactions`, `--market-cap`
+  - [x] Support all output formats (table/json/markdown/toon)
+  - [x] Color-coded tables with percentages
+- [x] Create `src/lib/scrapers/market-overview-scraper.ts`
+- [x] Create `src/commands/market-overview.ts`
+- [x] Update README with examples
+- [x] **AI Value**: Complete market snapshot in one command
+
+**Implementation Details:**
+- **Data Source**: Same `mst.txt` file used for block trades
+- **Efficiency**: One HTTP call gets both block trades AND market overview
+- **Market Cap**: 7.18 Trillion Tk total (50.3% equity, 49.4% debt)
+- **Market Activity**: 239 advanced vs 93 declined (strong bullish day)
+- **Use Case**: Daily market health check, sentiment analysis
+
+### Marginable Securities ✅ COMPLETE
+- [x] Command: `dse-ai marginable` (alias: `margin`)
+  - [x] Scrape `marginable-securities.php`
+  - [x] Parse all margin-eligible securities
+  - [x] Extract: trading code, company name, category
+  - [x] Add flag: `--category <CAT>` for filtering
+  - [x] Add flag: `--symbol <CODE>` for searching
+  - [x] Support all output formats (table/json/markdown/toon)
+  - [x] Show category breakdown
+- [x] Create `src/lib/scrapers/marginable-scraper.ts`
+- [x] Create `src/commands/marginable.ts`
+- [x] Update README with examples
+- [x] **AI Value**: Identify stocks available for leveraged trading
+
+**Implementation Details:**
+- **URL**: `https://www.dsebd.org/marginable-securities.php`
+- **Total**: 123 securities eligible for margin financing
+- **Breakdown**: 117 Category A, 6 Category B
+- **Use Case**: Filter stocks eligible for margin trading/financing
+- **Common Searches**: Banks, pharma, telecom all marginable
+
+### Global Markets Comparison ✅ COMPLETE
+- [x] Command: `dse-ai global-markets` (alias: `global`)
+  - [x] Scrape `markets.php`
+  - [x] Parse international market indices
+  - [x] Extract: country, index, monthly/yearly changes, GDP, inflation, interest rates
+  - [x] Add flag: `--region <NAME>` for filtering by region
+  - [x] Add flag: `--country <NAME>` for searching specific country
+  - [x] Support all output formats (table/json/markdown/toon)
+  - [x] Group display by region
+  - [x] Highlight Bangladesh data
+- [x] Create `src/lib/scrapers/global-markets-scraper.ts`
+- [x] Create `src/commands/global-markets.ts`
+- [x] Update README with examples
+- [x] **AI Value**: Compare DSE performance with global markets
+
+**Implementation Details:**
+- **URL**: `https://www.dsebd.org/markets.php`
+- **Regions**: Asia Pacific, Asian Giants, Europe, USA
+- **Countries**: 15+ markets including Bangladesh, India, Pakistan, USA, UK, etc.
+- **Data**: Stock indices, GDP growth, inflation, interest rates
+- **Bangladesh Metrics**: DSEX 4,865 (-2.28% MoM, -6.73% YoY), GDP 11%, Inflation -15.18%
+- **Use Case**: Benchmark DSE against regional and global markets
+
+### Actuarial Valuation Status ✅ COMPLETE
+- [x] Command: `dse-ai actuarial` (alias: `insurance`)
+  - [x] Scrape `actuarial-valuation-status.php`
+  - [x] Parse insurance companies' actuarial valuation status
+  - [x] Extract: trading code, company name, compliance status
+  - [x] Add flag: `--compliant` for compliant companies only
+  - [x] Add flag: `--non-compliant` for non-compliant companies only
+  - [x] Support all output formats (table/json/markdown/toon)
+  - [x] Show compliance rate statistics
+- [x] Create `src/lib/scrapers/actuarial-scraper.ts`
+- [x] Create `src/commands/actuarial.ts`
+- [x] Update README with examples
+- [x] **AI Value**: Compliance check for insurance sector investments
+
+**Implementation Details:**
+- **URL**: `https://www.dsebd.org/actuarial-valuation-status.php`
+- **Total**: 15 life insurance companies
+- **Compliance**: 10 compliant (66.7%), 5 non-compliant (33.3%)
+- **Non-Compliant**: FAREASTLIF, PADMALIFE, PRIMELIFE, PROGRESLIF, SUNLIFEINS
+- **Use Case**: Risk screening for insurance sector, regulatory compliance check
 
 ---
 

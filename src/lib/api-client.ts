@@ -11,6 +11,10 @@ import { scrapeSectoralPE, scrapeSectorStocks, type SectorPE, type SectorStock }
 import { scrapeMarketSummary, type HighestRecord, type DailyMarketInfo } from './scrapers/market-summary-scraper.js';
 import { scrapeGoingConcernThreats, type GoingConcernThreat, type RiskData } from './scrapers/risk-scraper.js';
 import { scrapeBlockTrades, type BlockTrade, type BlockTradesData } from './scrapers/block-trades-scraper.js';
+import { scrapeMarketOverview, type MarketOverviewData } from './scrapers/market-overview-scraper.js';
+import { scrapeMarginableSecurities, type MarginableSecurity, type MarginableSecuritiesData } from './scrapers/marginable-scraper.js';
+import { scrapeGlobalMarkets, type GlobalMarket, type GlobalMarketsData } from './scrapers/global-markets-scraper.js';
+import { scrapeActuarialValuation, type ActuarialValuation, type ActuarialValuationData } from './scrapers/actuarial-scraper.js';
 
 export class DseApiClient {
   async getLatest(type: LatestType = 'trade-code'): Promise<{ data: StockData[]; date: string }> {
@@ -88,6 +92,30 @@ export class DseApiClient {
     const response = await fetch('https://www.dsebd.org/mst.txt');
     const text = await response.text();
     return scrapeBlockTrades(text);
+  }
+
+  async getMarketOverview(): Promise<MarketOverviewData> {
+    const response = await fetch('https://www.dsebd.org/mst.txt');
+    const text = await response.text();
+    return scrapeMarketOverview(text);
+  }
+
+  async getMarginableSecurities(): Promise<MarginableSecuritiesData> {
+    const response = await fetch('https://www.dsebd.org/marginable-securities.php');
+    const html = await response.text();
+    return scrapeMarginableSecurities(html);
+  }
+
+  async getGlobalMarkets(): Promise<GlobalMarketsData> {
+    const response = await fetch('https://www.dsebd.org/markets.php');
+    const html = await response.text();
+    return scrapeGlobalMarkets(html);
+  }
+
+  async getActuarialValuation(): Promise<ActuarialValuationData> {
+    const response = await fetch('https://www.dsebd.org/actuarial-valuation-status.php');
+    const html = await response.text();
+    return scrapeActuarialValuation(html);
   }
 }
 

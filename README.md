@@ -78,6 +78,31 @@ dse-ai blocks --top 10        # Show top 10 by value
 dse-ai blocks --min-value 20  # Filter trades >= 20M Tk
 dse-ai blocks --symbol GP     # Filter by instrument code
 
+# Get comprehensive market overview
+dse-ai market-overview        # Full overview: categories, transactions, market cap
+dse-ai overview               # Alias
+dse-ai overview --categories  # Show only category statistics
+dse-ai overview --transactions # Show only transaction stats
+dse-ai overview --market-cap  # Show only market capitalization
+
+# Get marginable securities (eligible for margin financing)
+dse-ai marginable             # Show all 123 margin-eligible stocks
+dse-ai margin                 # Alias
+dse-ai margin --category B    # Filter by category
+dse-ai margin --symbol BANK   # Search for specific stocks
+
+# Compare DSE with global markets
+dse-ai global-markets         # Show all international markets
+dse-ai global                 # Alias
+dse-ai global --region "Asia Pacific"  # Filter by region
+dse-ai global --country Bangladesh     # Show only Bangladesh
+
+# Check actuarial valuation (insurance companies)
+dse-ai actuarial              # Show all insurance companies
+dse-ai insurance              # Alias
+dse-ai actuarial --compliant  # Show only compliant companies
+dse-ai actuarial --non-compliant  # Show only non-compliant
+
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
 dse-ai historical --start 2024-01-01 --end 2024-01-31 --inst GRAMEEN

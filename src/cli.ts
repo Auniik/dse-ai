@@ -17,6 +17,10 @@ import { sectorsCommand } from './commands/sectors.js';
 import { marketSummaryCommand } from './commands/market-summary.js';
 import { riskCommand } from './commands/risk-screen.js';
 import { blockTradesCommand } from './commands/block-trades.js';
+import { marketOverviewCommand } from './commands/market-overview.js';
+import { marginableCommand } from './commands/marginable.js';
+import { globalMarketsCommand } from './commands/global-markets.js';
+import { actuarialCommand } from './commands/actuarial.js';
 
 const program = new Command();
 
@@ -39,6 +43,10 @@ program.addCommand(sectorsCommand);
 program.addCommand(marketSummaryCommand);
 program.addCommand(riskCommand);
 program.addCommand(blockTradesCommand);
+program.addCommand(marketOverviewCommand);
+program.addCommand(marginableCommand);
+program.addCommand(globalMarketsCommand);
+program.addCommand(actuarialCommand);
 
 program.parse(process.argv);
 
