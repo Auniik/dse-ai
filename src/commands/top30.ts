@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
+import type { FormatOptions } from '../types/common.js';
 
 export function createTop30Command() {
   const command = new Command('top30');
@@ -12,7 +13,7 @@ export function createTop30Command() {
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
     .option('-t, --toon', 'Output as TOON (compact for LLMs)')
-    .action(async (options) => {
+    .action(async (options: FormatOptions) => {
       const spinner = ora('Fetching top 30 stocks...').start();
 
       try {

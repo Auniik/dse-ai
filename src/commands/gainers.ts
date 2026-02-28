@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
+import type { FormatOptions } from '../types/common.js';
 
 export function createGainersCommand() {
   const command = new Command('gainers');
@@ -12,7 +13,7 @@ export function createGainersCommand() {
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
     .option('-t, --toon', 'Output as TOON (compact for LLMs)')
-    .action(async (options) => {
+    .action(async (options: FormatOptions) => {
       const spinner = ora('Fetching top gainers...').start();
 
       try {

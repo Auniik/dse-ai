@@ -2,11 +2,9 @@ import { Command } from 'commander';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatToon } from '../lib/formatter.js';
 import type { NewsItem } from '../lib/scrapers/news-scraper.js';
+import type { FormatOptions } from '../types/common.js';
 
-interface NewsOptions {
-  json?: boolean;
-  markdown?: boolean;
-  toon?: boolean;
+interface NewsOptions extends FormatOptions {
   symbol?: string;
   startDate?: string;
   endDate?: string;

@@ -5,6 +5,7 @@ import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { encode as toonEncode } from '@toon-format/toon';
 import type { CompanyInfo } from '../lib/scrapers/company-scraper.js';
+import type { FormatOptions } from '../types/common.js';
 
 export function createCompanyCommand() {
   const command = new Command('company');
@@ -15,7 +16,7 @@ export function createCompanyCommand() {
     .option('-j, --json', 'Output in JSON format')
     .option('-m, --markdown', 'Output in Markdown format')
     .option('--toon', 'Output in TOON format')
-    .action(async (symbol: string, options) => {
+    .action(async (symbol: string, options: FormatOptions) => {
     const spinner = ora('Fetching company information...').start();
 
     try {

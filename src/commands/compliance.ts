@@ -2,11 +2,9 @@ import { Command } from 'commander';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatToon } from '../lib/formatter.js';
 import type { FinancialSubmission } from '../lib/scrapers/financial-compliance-scraper.js';
+import type { FormatOptions } from '../types/common.js';
 
-interface ComplianceOptions {
-  json?: boolean;
-  markdown?: boolean;
-  toon?: boolean;
+interface ComplianceOptions extends FormatOptions {
   symbol?: string;
   q1?: boolean;
   q2?: boolean;

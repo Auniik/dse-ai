@@ -3,6 +3,12 @@ import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
+import type { FormatOptions } from '../types/common.js';
+
+interface MarginableOptions extends FormatOptions {
+  category?: string;
+  symbol?: string;
+}
 
 export function createMarginableCommand() {
   const command = new Command('marginable');
@@ -15,7 +21,7 @@ export function createMarginableCommand() {
   .option('-j, --json', 'Output in JSON format')
   .option('-m, --markdown', 'Output in Markdown format')
   .option('-t, --toon', 'Output in TOON format')
-  .action(async (options) => {
+  .action(async (options: MarginableOptions) => {
     const spinner = ora('Fetching marginable securities...').start();
     const client = new DseApiClient();
 

@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
+import type { FormatOptions } from '../types/common.js';
 
 export function createDsexCommand() {
   const command = new Command('dsex');
@@ -13,7 +14,7 @@ export function createDsexCommand() {
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
     .option('-t, --toon', 'Output as TOON (compact for LLMs)')
-    .action(async (symbol, options) => {
+    .action(async (symbol, options: FormatOptions) => {
       const spinner = ora(
         symbol 
           ? `Fetching DSEX data for ${symbol}...`

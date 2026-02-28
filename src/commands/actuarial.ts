@@ -3,6 +3,12 @@ import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
+import type { FormatOptions } from '../types/common.js';
+
+interface ActuarialOptions extends FormatOptions {
+  compliant?: boolean;
+  nonCompliant?: boolean;
+}
 
 export function createActuarialCommand() {
   const command = new Command('actuarial');
@@ -15,7 +21,7 @@ export function createActuarialCommand() {
   .option('-j, --json', 'Output in JSON format')
   .option('-m, --markdown', 'Output in Markdown format')
   .option('-t, --toon', 'Output in TOON format')
-  .action(async (options) => {
+  .action(async (options: ActuarialOptions) => {
     const spinner = ora('Fetching actuarial valuation status...').start();
     const client = new DseApiClient();
 

@@ -4,6 +4,11 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { encode as toonEncode } from '@toon-format/toon';
+import type { FormatOptions } from '../types/common.js';
+
+interface MarketStatsOptions extends FormatOptions {
+  block?: boolean;
+}
 
 export function createMarketStatsCommand() {
   const command = new Command('market-stats');
@@ -15,7 +20,7 @@ export function createMarketStatsCommand() {
     .option('-m, --markdown', 'Output as Markdown')
     .option('-t, --toon', 'Output as TOON (compact for LLMs)')
     .option('--no-block', 'Hide block trades table')
-    .action(async (options) => {
+    .action(async (options: MarketStatsOptions) => {
       const spinner = ora('Fetching market statistics...').start();
 
       try {

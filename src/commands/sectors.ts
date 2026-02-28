@@ -4,6 +4,12 @@ import chalk from 'chalk';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import type { SectorPE, SectorStock } from '../lib/scrapers/sector-scraper.js';
+import type { FormatOptions } from '../types/common.js';
+
+interface SectorsOptions extends FormatOptions {
+  sector?: string;
+  area?: string;
+}
 
 export function createSectorsCommand() {
   const command = new Command('sectors');
@@ -15,7 +21,7 @@ export function createSectorsCommand() {
     .option('-j, --json', 'Output in JSON format')
     .option('-m, --markdown', 'Output in Markdown format')
     .option('-t, --toon', 'Output in TOON format')
-    .action(async (options) => {
+    .action(async (options: SectorsOptions) => {
       const spinner = ora('Fetching sector data...').start();
       const client = new DseApiClient();
 
@@ -54,7 +60,7 @@ export function createSectorsCommand() {
           areaId = sector.areaId;
         }
 
-        const { data, date, sectorName } = await client.getSectorStocks(areaId);
+        const { data, date, sectorName } = await client.getSectorStocks(areaId!);
         spinner.succeed(chalk.green(`Fetched ${data.length} stocks from ${sectorName}`));
 
         if (format === 'json') {

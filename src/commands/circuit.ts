@@ -3,6 +3,13 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon, formatMarkdown } from '../lib/formatter.js';
+import type { FormatOptions } from '../types/common.js';
+
+interface CircuitOptions extends FormatOptions {
+  upper?: boolean;
+  lower?: boolean;
+  all?: boolean;
+}
 
 export function createCircuitCommand() {
   const command = new Command('circuit');
@@ -15,7 +22,7 @@ export function createCircuitCommand() {
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
     .option('-t, --toon', 'Output as TOON (compact for LLMs)')
-    .action(async (options) => {
+    .action(async (options: CircuitOptions) => {
       const spinner = ora('Fetching circuit breaker data...').start();
 
       try {

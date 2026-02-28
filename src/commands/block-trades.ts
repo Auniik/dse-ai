@@ -3,6 +3,13 @@ import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
+import type { FormatOptions } from '../types/common.js';
+
+interface BlockTradesOptions extends FormatOptions {
+  minValue?: string;
+  symbol?: string;
+  top?: string;
+}
 
 export function createBlockTradesCommand() {
   const command = new Command('block-trades');
@@ -16,7 +23,7 @@ export function createBlockTradesCommand() {
   .option('-j, --json', 'Output in JSON format')
   .option('-m, --markdown', 'Output in Markdown format')
   .option('-t, --toon', 'Output in TOON format')
-  .action(async (options) => {
+  .action(async (options: BlockTradesOptions) => {
     const spinner = ora('Fetching block trades data...').start();
     const client = new DseApiClient();
 
@@ -41,7 +48,7 @@ export function createBlockTradesCommand() {
       trades.sort((a, b) => parseFloat(b.valueInMn) - parseFloat(a.valueInMn));
       
       // Limit to top N
-      const topN = parseInt(options.top, 10);
+      const topN = parseInt(options.top || '20', 10);
       if (topN > 0 && topN < trades.length) {
         trades = trades.slice(0, topN);
       }

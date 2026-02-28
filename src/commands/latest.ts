@@ -4,6 +4,7 @@ import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
 import type { LatestType } from '../lib/scrapers/latest-scraper.js';
+import type { FormatOptions } from '../types/common.js';
 
 const SORT_DESCRIPTIONS: Record<LatestType, string> = {
   'trade-code': 'By Trading Code (default)',
@@ -14,6 +15,15 @@ const SORT_DESCRIPTIONS: Record<LatestType, string> = {
   'alpha': 'Alphabetically',
   'debt': 'Debt Board (Treasury Bonds)',
 };
+
+interface LatestOptions extends FormatOptions {
+  byChange?: boolean;
+  byValue?: boolean;
+  byVolume?: boolean;
+  byLtp?: boolean;
+  alpha?: boolean;
+  debt?: boolean;
+}
 
 export function createLatestCommand() {
   const command = new Command('latest');
@@ -29,7 +39,7 @@ export function createLatestCommand() {
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
     .option('-t, --toon', 'Output as TOON (compact for LLMs)')
-    .action(async (options) => {
+    .action(async (options: LatestOptions) => {
       // Determine sort type
       let type: LatestType = 'trade-code';
       if (options.byChange) type = 'change';

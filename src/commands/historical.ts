@@ -3,6 +3,13 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatStockTable, formatToon } from '../lib/formatter.js';
+import type { FormatOptions } from '../types/common.js';
+
+interface HistoricalOptions extends FormatOptions {
+  start: string;
+  end: string;
+  inst?: string;
+}
 
 export function createHistoricalCommand() {
   const command = new Command('historical');
@@ -15,7 +22,7 @@ export function createHistoricalCommand() {
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
     .option('-t, --toon', 'Output as TOON (compact for LLMs)')
-    .action(async (options) => {
+    .action(async (options: HistoricalOptions) => {
       const spinner = ora(
         `Fetching historical data from ${options.start} to ${options.end}...`
       ).start();
