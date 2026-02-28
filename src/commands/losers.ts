@@ -28,11 +28,11 @@ export function createLosersCommand() {
         spinner.succeed(chalk.green('Data fetched successfully!'));
 
         if (options.json) {
-          console.log(formatJson(result.data));
+          console.log(formatJson({ data: result.data, date: result.date }));
         } else if (options.markdown) {
           console.log(formatMarkdown(result.data));
         } else if (options.toon) {
-          console.log(formatToon(result.data));
+          console.log(formatToon({ data: result.data, date: result.date }));
         } else {
           const title = result.date || 'Top 10 Losers';
           console.log(formatStockTable(result.data, `📉 ${title}`));

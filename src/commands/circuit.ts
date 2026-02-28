@@ -51,12 +51,12 @@ export function createCircuitCommand() {
         const dateHeader = date ? `${title} - ${date}` : title;
 
         if (options.toon) {
-          console.log(formatToon(data));
+          console.log(formatToon({ data, date }));
           return;
         }
 
         if (options.json) {
-          console.log(formatJson(data));
+          console.log(formatJson({ data, date }));
           return;
         }
 
