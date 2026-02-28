@@ -23,6 +23,7 @@ import { createGlobalMarketsCommand } from './commands/global-markets.js';
 import { createActuarialCommand } from './commands/actuarial.js';
 import { createNewsCommand } from './commands/news.js';
 import { createComplianceCommand } from './commands/compliance.js';
+import { createBrokerCommand } from './commands/broker.js';
 
 const program = new Command();
 
@@ -51,6 +52,7 @@ program.addCommand(createGlobalMarketsCommand());
 program.addCommand(createActuarialCommand());
 program.addCommand(createNewsCommand());
 program.addCommand(createComplianceCommand());
+program.addCommand(createBrokerCommand());
 
 program.parse(process.argv);
 
