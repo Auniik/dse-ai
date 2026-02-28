@@ -6,6 +6,7 @@ import { getVersion } from './lib/utils.js';
 import { latestCommand } from './commands/latest.js';
 import { dsexCommand } from './commands/dsex.js';
 import { top30Command } from './commands/top30.js';
+import { top20Command } from './commands/top20.js';
 import { historicalCommand } from './commands/historical.js';
 
 const program = new Command();
@@ -18,6 +19,7 @@ program
 latestCommand(program);
 dsexCommand(program);
 top30Command(program);
+top20Command(program);
 historicalCommand(program);
 
 program.parse(process.argv);

@@ -20,9 +20,9 @@ export function dsexCommand(program: Command): void {
 
       try {
         const client = new DseApiClient();
-        const data = await client.getDsex(symbol);
+        const result = await client.getDsex(symbol);
 
-        if (data.length === 0) {
+        if (result.data.length === 0) {
           spinner.warn(chalk.yellow(`No data found${symbol ? ` for symbol: ${symbol}` : ''}`));
           return;
         }
@@ -30,15 +30,15 @@ export function dsexCommand(program: Command): void {
         spinner.succeed(chalk.green('Data fetched successfully!'));
 
         if (options.json) {
-          console.log(JSON.stringify(data, null, 2));
+          console.log(JSON.stringify(result.data, null, 2));
         } else if (options.markdown) {
           const { formatMarkdown } = await import('../lib/formatter.js');
-          console.log(formatMarkdown(data));
+          console.log(formatMarkdown(result.data));
         } else if (options.toon) {
-          console.log(formatToon(data));
+          console.log(formatToon(result.data));
         } else {
-          const title = symbol ? `📈 DSEX Data - ${symbol}` : '📈 DSEX Market Data';
-          console.log(formatStockTable(data, title));
+          const title = result.date || (symbol ? `DSEX Data - ${symbol}` : 'DSEX Market Data');
+          console.log(formatStockTable(result.data, `📊 ${title}`));
         }
       } catch (error) {
         spinner.fail(chalk.red('Failed to fetch data'));

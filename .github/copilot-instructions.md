@@ -28,9 +28,15 @@ npm run link                # Builds and links globally as 'dse-ai'
 
 ### Data Flow
 1. **Commands** (`src/commands/*.ts`) - CLI command definitions using commander.js
-2. **API Client** (`src/lib/api-client.ts`) - Fetches and parses HTML from dsebd.org
-3. **Formatter** (`src/lib/formatter.ts`) - Converts data to table/JSON/markdown
-4. **CLI Entry** (`src/cli.ts`) - Registers commands and parses argv
+2. **Scrapers** (`src/lib/scrapers/*.ts`) - Single-responsibility scrapers for each DSE page
+   - `common.ts` - Shared utilities (fetchWithRetry, parseTable)
+   - `latest-scraper.ts` - 7 latest stock data views
+   - `top-scraper.ts` - Top 30 and Top 20 data
+   - `dsex-scraper.ts` - DSEX market data
+   - `historical-scraper.ts` - Historical data
+3. **API Client** (`src/lib/api-client.ts`) - Thin wrapper delegating to scrapers
+4. **Formatter** (`src/lib/formatter.ts`) - Converts data to table/JSON/markdown/TOON
+5. **CLI Entry** (`src/cli.ts`) - Registers commands and parses argv
 
 ### Web Scraping Pattern
 - Uses `cheerio` to parse HTML tables from dsebd.org
@@ -79,10 +85,25 @@ import { DseApiClient } from '../lib/api-client';     // ✗ Won't compile
 - Change detection: Automatically colors positive values green, negative red
 
 ### Scraping Targets
-Fixed URLs in `api-client.ts`:
-- Latest: `/latest_share_price_scroll_l.php`
-- DSEX: `/dseX_share.php`
+URLs are now organized in separate scraper files:
+
+**latest-scraper.ts** (7 views):
+- `trade-code`: `/latest_share_price_scroll_l.php` (default)
+- `change`: `/latest_share_price_scroll_by_change.php`
+- `value`: `/latest_share_price_scroll_by_value.php`
+- `volume`: `/latest_share_price_scroll_by_volume.php`
+- `ltp`: `/latest_share_price_scroll_by_ltp.php`
+- `alpha`: `/latest_share_price_alpha.php`
+- `debt`: `/latest_share_price_scroll_treasury_bond.php`
+
+**top-scraper.ts**:
 - Top 30: `/dse30_share.php`
+- Top 20: `/top_20_share.php` (3 tables: value, volume, trade)
+
+**dsex-scraper.ts**:
+- DSEX: `/dseX_share.php`
+
+**historical-scraper.ts**:
 - Historical: `/day_end_archive.php` (with query params)
 
 ### Error Handling

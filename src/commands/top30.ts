@@ -16,19 +16,20 @@ export function top30Command(program: Command): void {
 
       try {
         const client = new DseApiClient();
-        const data = await client.getTop30();
+        const result = await client.getTop30();
 
         spinner.succeed(chalk.green('Data fetched successfully!'));
 
         if (options.json) {
-          console.log(JSON.stringify(data, null, 2));
+          console.log(JSON.stringify(result.data, null, 2));
         } else if (options.markdown) {
           const { formatMarkdown } = await import('../lib/formatter.js');
-          console.log(formatMarkdown(data));
+          console.log(formatMarkdown(result.data));
         } else if (options.toon) {
-          console.log(formatToon(data));
+          console.log(formatToon(result.data));
         } else {
-          console.log(formatStockTable(data, '🔥 Top 30 Stocks'));
+          const title = result.date || 'Top 30 Stocks';
+          console.log(formatStockTable(result.data, `📊 ${title}`));
         }
       } catch (error) {
         spinner.fail(chalk.red('Failed to fetch data'));

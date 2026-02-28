@@ -21,13 +21,13 @@ export function historicalCommand(program: Command): void {
 
       try {
         const client = new DseApiClient();
-        const data = await client.getHistorical(
+        const result = await client.getHistorical(
           options.start,
           options.end,
           options.inst
         );
 
-        if (data.length === 0) {
+        if (result.data.length === 0) {
           spinner.warn(chalk.yellow('No data found for the specified date range'));
           return;
         }
@@ -35,17 +35,15 @@ export function historicalCommand(program: Command): void {
         spinner.succeed(chalk.green('Data fetched successfully!'));
 
         if (options.json) {
-          console.log(JSON.stringify(data, null, 2));
+          console.log(JSON.stringify(result.data, null, 2));
         } else if (options.markdown) {
           const { formatMarkdown } = await import('../lib/formatter.js');
-          console.log(formatMarkdown(data));
+          console.log(formatMarkdown(result.data));
         } else if (options.toon) {
-          console.log(formatToon(data));
+          console.log(formatToon(result.data));
         } else {
-          const title = options.inst
-            ? `📅 Historical Data - ${options.inst} (${options.start} to ${options.end})`
-            : `📅 Historical Data (${options.start} to ${options.end})`;
-          console.log(formatStockTable(data, title));
+          const title = result.date || 'Historical Data';
+          console.log(formatStockTable(result.data, `📊 ${title}`));
         }
       } catch (error) {
         spinner.fail(chalk.red('Failed to fetch data'));

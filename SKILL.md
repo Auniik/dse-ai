@@ -10,6 +10,7 @@ The CLI scrapes data directly from:
 - Latest: https://dsebd.org/latest_share_price_scroll_l.php
 - DSEX: https://dsebd.org/dseX_share.php
 - Top 30: https://dsebd.org/dse30_share.php
+- Top 20: https://dsebd.org/top_20_share.php
 - Historical: https://dsebd.org/day_end_archive.php
 
 ## Available Commands
@@ -18,6 +19,10 @@ The CLI scrapes data directly from:
 - `dse-ai latest` - Get latest stock data for all instruments
 - `dse-ai dsex [symbol]` - Get DSEX market data with optional symbol filter
 - `dse-ai top30` - Get top 30 performing stocks
+- `dse-ai top20` - Get top 20 shares (3 tables: by value, volume, trade)
+  - `--value` - Show only top 20 by value
+  - `--volume` - Show only top 20 by volume
+  - `--trade` - Show only top 20 by trade
 - `dse-ai historical --start DATE --end DATE [--inst SYMBOL]` - Get historical stock data
 
 ### Output Options

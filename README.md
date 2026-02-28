@@ -16,7 +16,13 @@ npm install -g dse-ai
 
 ```bash
 # Get latest stock data for all instruments
-dse-ai latest
+dse-ai latest                   # By trading code (default)
+dse-ai latest --by-change       # Sort by % change
+dse-ai latest --by-value        # Sort by value
+dse-ai latest --by-volume       # Sort by volume
+dse-ai latest --by-ltp          # Sort by last trade price
+dse-ai latest --alpha           # Sort alphabetically
+dse-ai latest --debt            # Show debt board (treasury bonds)
 
 # Get DSEX market data (with optional symbol filter)
 dse-ai dsex
@@ -24,6 +30,12 @@ dse-ai dsex GRAMEEN
 
 # Get top 30 performing stocks
 dse-ai top30
+
+# Get top 20 shares (3 tables: value, volume, trade)
+dse-ai top20                  # Show all 3 tables
+dse-ai top20 --value          # Only by value
+dse-ai top20 --volume         # Only by volume
+dse-ai top20 --trade          # Only by trade
 
 # Get historical data for a date range
 dse-ai historical --start 2024-01-01 --end 2024-01-31
@@ -79,9 +91,17 @@ npm test
 ## Data Source
 
 All data is scraped directly from:
-- Latest: https://dsebd.org/latest_share_price_scroll_l.php
+- Latest (7 views):
+  - https://dsebd.org/latest_share_price_scroll_l.php (by trading code - default)
+  - https://dsebd.org/latest_share_price_scroll_by_change.php (by % change)
+  - https://dsebd.org/latest_share_price_scroll_by_value.php (by value)
+  - https://dsebd.org/latest_share_price_scroll_by_volume.php (by volume)
+  - https://dsebd.org/latest_share_price_scroll_by_ltp.php (by last trade price)
+  - https://dsebd.org/latest_share_price_alpha.php (alphabetically)
+  - https://dsebd.org/latest_share_price_scroll_treasury_bond.php (debt board)
 - DSEX: https://dsebd.org/dseX_share.php
 - Top 30: https://dsebd.org/dse30_share.php
+- Top 20: https://dsebd.org/top_20_share.php (3 tables: by value, volume, trade)
 - Historical: https://dsebd.org/day_end_archive.php
 
 ## License
