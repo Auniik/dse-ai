@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import ora from 'ora';
 import chalk from 'chalk';
 import { DseApiClient } from '../lib/api-client.js';
-import { formatStockTable, formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
+import { formatJson, formatMarkdown, formatStockTable, formatToon } from '../lib/formatter.js';
 import type { FormatOptions } from '../types/common.js';
 
 interface MarketSummaryOptions extends FormatOptions {
@@ -20,9 +20,9 @@ export function createMarketSummaryCommand() {
   .option('--records', 'Show only highest records')
   .option('--recent', 'Show only recent daily data')
   .option('--days <number>', 'Limit recent data to N days (default: 10)', '10')
-  .option('-j, --json', 'Output in JSON format')
-  .option('-m, --markdown', 'Output in Markdown format')
-  .option('-t, --toon', 'Output in TOON format')
+  .option('-j, --json', 'Output as JSON')
+  .option('-m, --markdown', 'Output as Markdown')
+  .option('-t, --toon', 'Output as TOON (compact for LLMs)')
   .action(async (options: MarketSummaryOptions) => {
     const spinner = ora('Fetching market summary...').start();
     const client = new DseApiClient();

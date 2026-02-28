@@ -1,8 +1,8 @@
 import { Command } from 'commander';
-import { DseApiClient } from '../lib/api-client.js';
-import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
+import { DseApiClient } from '../lib/api-client.js';
+import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import type { FormatOptions } from '../types/common.js';
 
 interface MarketOverviewOptions extends FormatOptions {
@@ -20,9 +20,9 @@ export function createMarketOverviewCommand() {
   .option('--categories', 'Show only category statistics')
   .option('--transactions', 'Show only transaction statistics')
   .option('--market-cap', 'Show only market capitalization')
-  .option('-j, --json', 'Output in JSON format')
-  .option('-m, --markdown', 'Output in Markdown format')
-  .option('-t, --toon', 'Output in TOON format')
+  .option('-j, --json', 'Output as JSON')
+  .option('-m, --markdown', 'Output as Markdown')
+  .option('-t, --toon', 'Output as TOON (compact for LLMs)')
   .action(async (options: MarketOverviewOptions) => {
     const spinner = ora('Fetching market overview...').start();
     const client = new DseApiClient();

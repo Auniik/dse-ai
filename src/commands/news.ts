@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import chalk from 'chalk';
+import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatToon } from '../lib/formatter.js';
 import type { NewsItem } from '../lib/scrapers/news-scraper.js';
@@ -26,6 +28,8 @@ export function createNewsCommand() {
     .option('-d, --days <number>', 'News from last N days (default: 30)', '30')
     .option('-l, --limit <number>', 'Limit number of news items')
     .action(async (options: NewsOptions) => {
+      const spinner = ora('Fetching news...').start();
+
       try {
         const apiClient = new DseApiClient();
         let apiOptions: { symbol?: string; startDate?: string; endDate?: string } = {};
@@ -49,6 +53,8 @@ export function createNewsCommand() {
         }
 
         const data = await apiClient.getNews(apiOptions);
+        
+        spinner.succeed(chalk.green('Data fetched successfully!'));
         
         // Apply limit if specified
         let news = data.news;
@@ -75,6 +81,7 @@ export function createNewsCommand() {
           console.log(`\nTotal News: ${news.length}${options.limit ? ` (showing ${options.limit} of ${data.totalNews})` : ''}`);
         }
       } catch (error) {
+        spinner.fail(chalk.red('Failed to fetch data'));
         if (error instanceof Error) {
           console.error('Error fetching news:', error.message);
         }

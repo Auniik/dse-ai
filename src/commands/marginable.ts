@@ -1,8 +1,8 @@
 import { Command } from 'commander';
-import { DseApiClient } from '../lib/api-client.js';
-import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import chalk from 'chalk';
 import ora from 'ora';
+import { DseApiClient } from '../lib/api-client.js';
+import { formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
 import type { FormatOptions } from '../types/common.js';
 
 interface MarginableOptions extends FormatOptions {
@@ -18,9 +18,9 @@ export function createMarginableCommand() {
   .description('Show stocks eligible for margin financing')
   .option('--category <cat>', 'Filter by category (A, B, N, Z)')
   .option('--symbol <code>', 'Search for specific trading code')
-  .option('-j, --json', 'Output in JSON format')
-  .option('-m, --markdown', 'Output in Markdown format')
-  .option('-t, --toon', 'Output in TOON format')
+  .option('-j, --json', 'Output as JSON')
+  .option('-m, --markdown', 'Output as Markdown')
+  .option('-t, --toon', 'Output as TOON (compact for LLMs)')
   .action(async (options: MarginableOptions) => {
     const spinner = ora('Fetching marginable securities...').start();
     const client = new DseApiClient();

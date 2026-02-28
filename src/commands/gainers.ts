@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
-import { formatStockTable, formatToon } from '../lib/formatter.js';
+import { formatJson, formatMarkdown, formatStockTable, formatToon } from '../lib/formatter.js';
 import type { FormatOptions } from '../types/common.js';
 
 export function createGainersCommand() {
@@ -28,9 +28,8 @@ export function createGainersCommand() {
         spinner.succeed(chalk.green('Data fetched successfully!'));
 
         if (options.json) {
-          console.log(JSON.stringify(result.data, null, 2));
+          console.log(formatJson(result.data));
         } else if (options.markdown) {
-          const { formatMarkdown } = await import('../lib/formatter.js');
           console.log(formatMarkdown(result.data));
         } else if (options.toon) {
           console.log(formatToon(result.data));

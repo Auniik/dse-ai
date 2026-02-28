@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
-import { formatStockTable, formatToon, formatMarkdown } from '../lib/formatter.js';
+import { formatJson, formatMarkdown, formatStockTable, formatToon } from '../lib/formatter.js';
 import type { FormatOptions } from '../types/common.js';
 
 interface CircuitOptions extends FormatOptions {
@@ -45,7 +45,7 @@ export function createCircuitCommand() {
           title = '⚡ Circuit Breaker Hits';
         }
 
-        spinner.stop();
+        spinner.succeed(chalk.green('Data fetched successfully!'));
 
         const { data, date } = result;
         const dateHeader = date ? `${title} - ${date}` : title;
@@ -56,7 +56,7 @@ export function createCircuitCommand() {
         }
 
         if (options.json) {
-          console.log(JSON.stringify(data, null, 2));
+          console.log(formatJson(data));
           return;
         }
 
@@ -82,8 +82,10 @@ export function createCircuitCommand() {
           console.log(chalk.gray(`\nShowing all ${data.length} circuit breaker limits.`));
         }
       } catch (error) {
-        spinner.stop();
-        console.error(chalk.red('Error fetching circuit breaker data:'), error);
+        spinner.fail(chalk.red('Failed to fetch circuit breaker data'));
+        if (error instanceof Error) {
+          console.error(chalk.red('Error:'), error.message);
+        }
         process.exit(1);
       }
     });

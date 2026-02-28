@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import chalk from 'chalk';
+import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { formatJson, formatToon } from '../lib/formatter.js';
 import type { FinancialSubmission } from '../lib/scrapers/financial-compliance-scraper.js';
@@ -30,6 +32,8 @@ export function createComplianceCommand() {
     .option('--non-submitted', 'Show only non-submitted reports')
     .option('--delayed', 'Show only delayed submissions')
     .action(async (options: ComplianceOptions) => {
+      const spinner = ora('Fetching financial compliance data...').start();
+
       try {
         const apiClient = new DseApiClient();
         
@@ -44,6 +48,8 @@ export function createComplianceCommand() {
           options.symbol?.toUpperCase(),
           quarters.length > 0 ? quarters : undefined
         );
+        
+        spinner.succeed(chalk.green('Data fetched successfully!'));
         
         let submissions = data.submissions;
         
@@ -85,6 +91,7 @@ export function createComplianceCommand() {
           if (nonSubmitted > 0) console.log(`  Non-Submitted: ${nonSubmitted}`);
         }
       } catch (error) {
+        spinner.fail(chalk.red('Failed to fetch data'));
         if (error instanceof Error) {
           console.error('Error fetching financial compliance data:', error.message);
         }

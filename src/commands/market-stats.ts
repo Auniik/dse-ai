@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { encode as toonEncode } from '@toon-format/toon';
+import { formatJson } from '../lib/formatter.js';
 import type { FormatOptions } from '../types/common.js';
 
 interface MarketStatsOptions extends FormatOptions {
@@ -27,7 +28,7 @@ export function createMarketStatsCommand() {
         const client = new DseApiClient();
         const result = await client.getMarketStatistics();
 
-        spinner.stop();
+        spinner.succeed(chalk.green('Data fetched successfully!'));
 
         const { data, date } = result;
         const dateHeader = date ? `Market Statistics for ${date}` : 'Market Statistics';
@@ -38,7 +39,7 @@ export function createMarketStatsCommand() {
         }
 
         if (options.json) {
-          console.log(JSON.stringify(data, null, 2));
+          console.log(formatJson(data));
           return;
         }
 
@@ -149,8 +150,10 @@ export function createMarketStatsCommand() {
 
         console.log(); // Empty line at end
       } catch (error) {
-        spinner.stop();
-        console.error(chalk.red('Error fetching market statistics:'), error);
+        spinner.fail(chalk.red('Failed to fetch market statistics'));
+        if (error instanceof Error) {
+          console.error(chalk.red('Error:'), error.message);
+        }
         process.exit(1);
       }
     });

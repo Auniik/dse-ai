@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import ora from 'ora';
 import chalk from 'chalk';
 import { DseApiClient } from '../lib/api-client.js';
-import { formatStockTable, formatJson, formatMarkdown, formatToon } from '../lib/formatter.js';
+import { formatJson, formatMarkdown, formatStockTable, formatToon } from '../lib/formatter.js';
 import type { SectorPE, SectorStock } from '../lib/scrapers/sector-scraper.js';
 import type { FormatOptions } from '../types/common.js';
 
@@ -18,9 +18,9 @@ export function createSectorsCommand() {
     .description('Get sectoral P/E ratios and performance')
     .option('--sector <name>', 'Get stocks for a specific sector (e.g., Bank, IT Sector)')
     .option('--area <id>', 'Get stocks for a sector by area ID')
-    .option('-j, --json', 'Output in JSON format')
-    .option('-m, --markdown', 'Output in Markdown format')
-    .option('-t, --toon', 'Output in TOON format')
+    .option('-j, --json', 'Output as JSON')
+    .option('-m, --markdown', 'Output as Markdown')
+    .option('-t, --toon', 'Output as TOON (compact for LLMs)')
     .action(async (options: SectorsOptions) => {
       const spinner = ora('Fetching sector data...').start();
       const client = new DseApiClient();

@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
-import { formatStockTable, formatToon } from '../lib/formatter.js';
+import { formatJson, formatMarkdown, formatStockTable, formatToon } from '../lib/formatter.js';
 import type { FormatOptions } from '../types/common.js';
 
 interface Top20Options extends FormatOptions {
@@ -21,7 +21,7 @@ export function createTop20Command() {
     .option('-t, --trade', 'Show top 20 by trade')
     .option('-j, --json', 'Output as JSON')
     .option('-m, --markdown', 'Output as Markdown')
-    .option('--toon', 'Output as TOON (compact for LLMs)')
+    .option('-t, --toon', 'Output as TOON (compact for LLMs)')
     .action(async (options: Top20Options) => {
       const spinner = ora('Fetching top 20 shares...').start();
 
@@ -42,12 +42,11 @@ export function createTop20Command() {
         if (options.json) {
           if (type) {
             const result = data as { data: any[]; date: string };
-            console.log(JSON.stringify(result.data, null, 2));
+            console.log(formatJson(result.data));
           } else {
-            console.log(JSON.stringify(data, null, 2));
+            console.log(formatJson(data));
           }
         } else if (options.markdown) {
-          const { formatMarkdown } = await import('../lib/formatter.js');
           if (type) {
             const result = data as { data: any[]; date: string };
             console.log(formatMarkdown(result.data));

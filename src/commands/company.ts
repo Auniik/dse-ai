@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { DseApiClient } from '../lib/api-client.js';
 import { encode as toonEncode } from '@toon-format/toon';
+import { formatJson } from '../lib/formatter.js';
 import type { CompanyInfo } from '../lib/scrapers/company-scraper.js';
 import type { FormatOptions } from '../types/common.js';
 
@@ -13,9 +14,9 @@ export function createCompanyCommand() {
   command
     .description('Get company financial information')
     .argument('<symbol>', 'Trading code/symbol (e.g., CITYBANK, GP)')
-    .option('-j, --json', 'Output in JSON format')
-    .option('-m, --markdown', 'Output in Markdown format')
-    .option('--toon', 'Output in TOON format')
+    .option('-j, --json', 'Output as JSON')
+    .option('-m, --markdown', 'Output as Markdown')
+    .option('-t, --toon', 'Output as TOON (compact for LLMs)')
     .action(async (symbol: string, options: FormatOptions) => {
     const spinner = ora('Fetching company information...').start();
 
@@ -23,7 +24,7 @@ export function createCompanyCommand() {
       const client = new DseApiClient();
       const result = await client.getCompany(symbol);
 
-      spinner.stop();
+      spinner.succeed(chalk.green('Data fetched successfully!'));
 
       if (!result.data) {
         console.log(chalk.red(`❌ Company not found: ${symbol}`));
@@ -39,7 +40,7 @@ export function createCompanyCommand() {
       }
 
       if (options.json) {
-        console.log(JSON.stringify(data, null, 2));
+        console.log(formatJson(data));
         return;
       }
 
@@ -269,8 +270,10 @@ export function createCompanyCommand() {
 
       console.log(); // Empty line at end
     } catch (error) {
-      spinner.stop();
-      console.error(chalk.red('Error fetching company data:'), error);
+      spinner.fail(chalk.red('Failed to fetch company data'));
+      if (error instanceof Error) {
+        console.error(chalk.red('Error:'), error.message);
+      }
       process.exit(1);
     }
   });
