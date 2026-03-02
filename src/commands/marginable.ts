@@ -42,7 +42,7 @@ export function createMarginableCommand() {
         securities = securities.filter(s => s.tradingCode.toUpperCase().includes(symbolUpper));
       }
       
-      spinner.succeed(chalk.green(`Found ${securities.length} marginable securities`));
+      spinner.stop();
       
       if (securities.length === 0) {
         console.log(chalk.yellow('\n⚠️  No marginable securities found matching criteria'));

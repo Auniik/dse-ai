@@ -22,7 +22,7 @@ export function createRiskScreenCommand() {
         const format = options.json ? 'json' : options.markdown ? 'markdown' : options.toon ? 'toon' : 'table';
         const result = await client.getGoingConcernThreats();
         
-        spinner.succeed(chalk.green(`Found ${result.data.length} companies with going concern threats`));
+        spinner.stop();
         
         if (result.data.length === 0) {
           console.log(chalk.green('\n✓ No companies with going concern threats found'));

@@ -54,7 +54,7 @@ export function createNewsCommand() {
 
         const data = await apiClient.getNews(apiOptions);
         
-        spinner.succeed(chalk.green('Data fetched successfully!'));
+        spinner.stop();
         
         // Apply limit if specified
         let news = data.news;

@@ -55,7 +55,7 @@ export function createLatestCommand() {
         const client = new DseApiClient();
         const result = await client.getLatest(type);
 
-        spinner.succeed(chalk.green('Data fetched successfully!'));
+        spinner.stop();
 
         if (options.json) {
           console.log(formatJson({ data: result.data, date: result.date }));

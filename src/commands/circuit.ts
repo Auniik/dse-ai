@@ -45,7 +45,7 @@ export function createCircuitCommand() {
           title = '⚡ Circuit Breaker Hits';
         }
 
-        spinner.succeed(chalk.green('Data fetched successfully!'));
+        spinner.stop();
 
         const { data, date } = result;
         const dateHeader = date ? `${title} - ${date}` : title;

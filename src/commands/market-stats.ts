@@ -28,7 +28,7 @@ export function createMarketStatsCommand() {
         const client = new DseApiClient();
         const result = await client.getMarketStatistics();
 
-        spinner.succeed(chalk.green('Data fetched successfully!'));
+        spinner.stop();
 
         const { data, date } = result;
         const dateHeader = date ? `Market Statistics for ${date}` : 'Market Statistics';

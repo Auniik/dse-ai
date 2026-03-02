@@ -24,7 +24,7 @@ export function createCompanyCommand() {
       const client = new DseApiClient();
       const result = await client.getCompany(symbol);
 
-      spinner.succeed(chalk.green('Data fetched successfully!'));
+      spinner.stop();
 
       if (!result.data) {
         console.log(chalk.red(`❌ Company not found: ${symbol}`));

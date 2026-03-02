@@ -35,7 +35,7 @@ export function createMarketOverviewCommand() {
       const showTransactions = options.transactions || (!options.categories && !options.transactions && !options.marketCap);
       const showMarketCap = options.marketCap || (!options.categories && !options.transactions && !options.marketCap);
       
-      spinner.succeed(chalk.green('Fetched market overview data'));
+      spinner.stop();
       
       console.log(chalk.gray(`Date: ${result.date}\n`));
 

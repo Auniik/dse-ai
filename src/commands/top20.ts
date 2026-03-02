@@ -36,7 +36,7 @@ export function createTop20Command() {
 
         const data = await client.getTop20(type);
 
-        spinner.succeed(chalk.green('Data fetched successfully!'));
+        spinner.stop();
 
         // Output based on format
         if (options.json) {

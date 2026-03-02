@@ -49,7 +49,7 @@ export function createComplianceCommand() {
           quarters.length > 0 ? quarters : undefined
         );
         
-        spinner.succeed(chalk.green('Data fetched successfully!'));
+        spinner.stop();
         
         let submissions = data.submissions;
         

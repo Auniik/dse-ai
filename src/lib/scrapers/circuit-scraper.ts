@@ -10,11 +10,10 @@ export interface CircuitBreakerData {
   'Breaker %': string;
   'Tick Size': string;
   'Open Adj. Price': string;
-  'Public Market': string;
-  'Ref. Floor Price for Block Market': string;
   'Ref. Floor Price': string;
   'Lower Limit': string;
   'Upper Limit': string;
+  'Ref. Floor Price for Block Market': string;
 }
 
 export async function scrapeCircuitBreakers(): Promise<{ data: CircuitBreakerData[]; date: string }> {
@@ -45,11 +44,10 @@ export async function scrapeCircuitBreakers(): Promise<{ data: CircuitBreakerDat
         'Breaker %': $(cells[2]).text().trim(),
         'Tick Size': $(cells[3]).text().trim(),
         'Open Adj. Price': $(cells[4]).text().trim(),
-        'Public Market': $(cells[5]).text().trim(),
-        'Ref. Floor Price for Block Market': $(cells[6]).text().trim(),
-        'Ref. Floor Price': $(cells[6]).text().trim(), // Same as block market floor  
-        'Lower Limit': $(cells[7]).text().trim(),
-        'Upper Limit': $(cells[8]).text().trim(),
+        'Ref. Floor Price': $(cells[5]).text().trim(),
+        'Lower Limit': $(cells[6]).text().trim(),
+        'Upper Limit': $(cells[7]).text().trim(),
+        'Ref. Floor Price for Block Market': $(cells[8]).text().trim(),
       };
 
       data.push(rowData as CircuitBreakerData);
@@ -66,23 +64,23 @@ export async function scrapeCircuitBreakersHit(type: 'upper' | 'lower' | 'both' 
     const { data, date } = await scrapeCircuitBreakers();
     
     // Filter for circuit breakers that have been hit
-    // A circuit breaker is "hit" when Public Market column has a value
-    let filtered = data.filter((row: CircuitBreakerData) => row['Public Market'] && row['Public Market'] !== '-' && row['Public Market'].trim() !== '');
+    // A circuit breaker is "hit" when Ref. Floor Price has a value
+    let filtered = data.filter((row: CircuitBreakerData) => row['Ref. Floor Price'] && row['Ref. Floor Price'] !== '-' && row['Ref. Floor Price'].trim() !== '');
     
     // Further filter by type if specified
     if (type === 'upper') {
-      // Upper limit hit when Public Market >= Upper Limit
+      // Upper limit hit when Ref. Floor Price >= Upper Limit
       filtered = filtered.filter((row: CircuitBreakerData) => {
-        const publicPrice = parseFloat(row['Public Market'].replace(/,/g, ''));
+        const floorPrice = parseFloat(row['Ref. Floor Price'].replace(/,/g, ''));
         const upperLimit = parseFloat(row['Upper Limit'].replace(/,/g, ''));
-        return !isNaN(publicPrice) && !isNaN(upperLimit) && publicPrice >= upperLimit;
+        return !isNaN(floorPrice) && !isNaN(upperLimit) && floorPrice >= upperLimit;
       });
     } else if (type === 'lower') {
-      // Lower limit hit when Public Market <= Lower Limit
+      // Lower limit hit when Ref. Floor Price <= Lower Limit
       filtered = filtered.filter((row: CircuitBreakerData) => {
-        const publicPrice = parseFloat(row['Public Market'].replace(/,/g, ''));
+        const floorPrice = parseFloat(row['Ref. Floor Price'].replace(/,/g, ''));
         const lowerLimit = parseFloat(row['Lower Limit'].replace(/,/g, ''));
-        return !isNaN(publicPrice) && !isNaN(lowerLimit) && publicPrice <= lowerLimit;
+        return !isNaN(floorPrice) && !isNaN(lowerLimit) && floorPrice <= lowerLimit;
       });
     }
     

@@ -61,7 +61,7 @@ export function createSectorsCommand() {
         }
 
         const { data, date, sectorName } = await client.getSectorStocks(areaId!);
-        spinner.succeed(chalk.green(`Fetched ${data.length} stocks from ${sectorName}`));
+        spinner.stop();
 
         if (format === 'json') {
           console.log(formatJson(data));
@@ -78,7 +78,7 @@ export function createSectorsCommand() {
       } else {
         // Show all sectors with P/E ratios
         const { data, date } = await client.getSectoralPE();
-        spinner.succeed(chalk.green(`Fetched ${data.length} sectors`));
+        spinner.stop();
 
         if (format === 'json') {
           console.log(formatJson(data));

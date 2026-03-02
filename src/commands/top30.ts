@@ -20,7 +20,7 @@ export function createTop30Command() {
         const client = new DseApiClient();
         const result = await client.getTop30();
 
-        spinner.succeed(chalk.green('Data fetched successfully!'));
+        spinner.stop();
 
         if (options.json) {
           console.log(formatJson({ data: result.data, date: result.date }));

@@ -53,7 +53,7 @@ export function createBlockTradesCommand() {
         trades = trades.slice(0, topN);
       }
       
-      spinner.succeed(chalk.green(`Found ${trades.length} block trades (${result.totalScrips} scrips)`));
+      spinner.stop();
       
       if (trades.length === 0) {
         console.log(chalk.yellow('\n⚠️  No block trades found matching criteria'));

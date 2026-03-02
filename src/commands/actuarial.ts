@@ -38,7 +38,7 @@ export function createActuarialCommand() {
         valuations = valuations.filter(v => v.status.toLowerCase() === 'no');
       }
       
-      spinner.succeed(chalk.green(`Found ${valuations.length} insurance companies`));
+      spinner.stop();
       
       console.log(chalk.gray(`Date: ${result.date}`));
       console.log(chalk.cyan(`Total: ${result.total} companies | Compliant: ${result.compliant} | Non-Compliant: ${result.nonCompliant}\n`));

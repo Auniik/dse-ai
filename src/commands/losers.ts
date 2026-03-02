@@ -25,7 +25,7 @@ export function createLosersCommand() {
           return;
         }
 
-        spinner.succeed(chalk.green('Data fetched successfully!'));
+        spinner.stop();
 
         if (options.json) {
           console.log(formatJson({ data: result.data, date: result.date }));

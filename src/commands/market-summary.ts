@@ -35,7 +35,7 @@ export function createMarketSummaryCommand() {
       const showRecent = options.recent || (!options.recent && !options.records);
       const daysLimit = parseInt(options.days || '10', 10);
 
-      spinner.succeed(chalk.green(`Fetched market summary data`));
+      spinner.stop();
 
       if (format === 'json') {
         const output: any = {};

@@ -42,7 +42,7 @@ export function createGlobalMarketsCommand() {
         markets = markets.filter(m => m.country.toLowerCase().includes(countryLower));
       }
       
-      spinner.succeed(chalk.green(`Found ${markets.length} global markets`));
+      spinner.stop();
       
       if (markets.length === 0) {
         console.log(chalk.yellow('\n⚠️  No markets found matching criteria'));
