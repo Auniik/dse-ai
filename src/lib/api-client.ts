@@ -17,6 +17,7 @@ import { scrapeGlobalMarkets, type GlobalMarket, type GlobalMarketsData } from '
 import { scrapeActuarialValuation, type ActuarialValuation, type ActuarialValuationData } from './scrapers/actuarial-scraper.js';
 import { scrapeNews, type NewsItem, type NewsData } from './scrapers/news-scraper.js';
 import { scrapeFinancialCompliance, type FinancialSubmission, type FinancialComplianceData } from './scrapers/financial-compliance-scraper.js';
+import { scrapeHolidays, type Holiday, type HolidaysData } from './scrapers/holidays-scraper.js';
 
 export class DseApiClient {
   async getLatest(type: LatestType = 'trade-code'): Promise<{ data: StockData[]; date: string }> {
@@ -114,6 +115,10 @@ export class DseApiClient {
 
   async getFinancialCompliance(symbol?: string, quarters?: string[]): Promise<FinancialComplianceData> {
     return scrapeFinancialCompliance(symbol, quarters);
+  }
+
+  async getHolidays(): Promise<HolidaysData> {
+    return scrapeHolidays();
   }
 }
 

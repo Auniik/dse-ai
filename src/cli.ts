@@ -24,6 +24,7 @@ import { createActuarialCommand } from './commands/actuarial.js';
 import { createNewsCommand } from './commands/news.js';
 import { createComplianceCommand } from './commands/compliance.js';
 import { createBrokerCommand } from './commands/broker.js';
+import { createHolidaysCommand } from './commands/holidays.js';
 
 const program = new Command();
 
@@ -53,6 +54,7 @@ program.addCommand(createActuarialCommand());
 program.addCommand(createNewsCommand());
 program.addCommand(createComplianceCommand());
 program.addCommand(createBrokerCommand());
+program.addCommand(createHolidaysCommand());
 
 program.parse(process.argv);
 
